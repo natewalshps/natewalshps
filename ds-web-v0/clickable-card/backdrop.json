@@ -1,0 +1,30 @@
+{
+  "components": {
+    "clickable-card": {
+      "backdrop": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.neutral.2}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "radius": {
+              "all": {
+                "$value": "12px",
+                "$type": "dimension"
+              }
+            }
+          },
+          "padding": {
+            "all": {
+              "$value": "16px 24px",
+              "$type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

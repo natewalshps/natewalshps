@@ -1,0 +1,26 @@
+{
+  "base": {
+    "breakpoints": {
+      "desktop": {
+        "$value": "1049px",
+        "$type": "dimension"
+      },
+      "desktop-hd": {
+        "$value": "1441px",
+        "$type": "dimension"
+      },
+      "mobile": {
+        "$value": "321px",
+        "$type": "dimension"
+      },
+      "narrow-tablet": {
+        "$value": "541px",
+        "$type": "dimension"
+      },
+      "tablet": {
+        "$value": "769px",
+        "$type": "dimension"
+      }
+    }
+  }
+}

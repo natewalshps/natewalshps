@@ -1,0 +1,32 @@
+{
+  "components": {
+    "alert": {
+      "content": {
+        "desktop": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.desktop.body1.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.body1.$value.fontSize}",
+              "$type": "dimension"
+            }
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.body1.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.body1.$value.fontSize}",
+              "$type": "dimension"
+            }
+          }
+        }
+      }
+    }
+  }
+}

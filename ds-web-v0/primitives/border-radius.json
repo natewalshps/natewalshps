@@ -1,0 +1,54 @@
+{
+  "base": {
+    "border": {
+      "desktop": {
+        "radius": {
+          "lg": {
+            "$value": "24px",
+            "$type": "dimension"
+          },
+          "md": {
+            "$value": "12px",
+            "$type": "dimension"
+          },
+          "sm": {
+            "$value": "8px",
+            "$type": "dimension"
+          },
+          "xl": {
+            "$value": "64px",
+            "$type": "dimension"
+          },
+          "xs": {
+            "$value": "4px",
+            "$type": "dimension"
+          }
+        }
+      },
+      "mobile": {
+        "radius": {
+          "lg": {
+            "$value": "12px",
+            "$type": "dimension"
+          },
+          "md": {
+            "$value": "8px",
+            "$type": "dimension"
+          },
+          "sm": {
+            "$value": "4px",
+            "$type": "dimension"
+          },
+          "xl": {
+            "$value": "24px",
+            "$type": "dimension"
+          },
+          "xs": {
+            "$value": "4px",
+            "$type": "dimension"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "components": {
+    "pagination": {
+      "page": {
+        "desktop": {
+          "font": {
+            "color": {
+              "$value": "{base.palette.secondary.linkblue}",
+              "$type": "color"
+            },
+            "line-height": {
+              "$value": "{base.typography.desktop.body2-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.body2-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.desktop.body2-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          },
+          "hover": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.neutral.5}",
+                "$type": "color"
+              }
+            },
+            "border": {
+              "radius": {
+                "all": {
+                  "$value": "2px",
+                  "$type": "dimension"
+                }
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.secondary.darkblue}",
+                "$type": "color"
+              }
+            },
+            "text-decoration": {
+              "$value": "underline"
+            }
+          },
+          "padding": {
+            "all": {
+              "$value": "6px 12px",
+              "$type": "string"
+            }
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.body2-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.body2-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.mobile.body2-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        },
+        "selected": {
+          "desktop": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              }
+            },
+            "hover": {
+              "background": {
+                "color": {
+                  "$value": "{base.palette.secondary.darkblue}",
+                  "$type": "color"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

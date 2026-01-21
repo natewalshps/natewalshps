@@ -1,0 +1,44 @@
+{
+  "components": {
+    "selectable-card": {
+      "secondary-label": {
+        "desktop": {
+          "font": {
+            "color": {
+              "$value": "{base.palette.neutral.80}",
+              "$type": "color"
+            },
+            "line-height": {
+              "$value": "{base.typography.desktop.heading6.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.heading6.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.desktop.heading6.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.heading6.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.heading6.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.mobile.heading6.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        }
+      }
+    }
+  }
+}

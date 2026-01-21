@@ -1,0 +1,86 @@
+{
+  "components": {
+    "autocomplete": {
+      "desktop": {
+        "selected": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.secondary.linkblue}",
+              "$type": "color"
+            }
+          },
+          "focus": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.neutral.80}",
+                "$type": "color"
+              }
+            }
+          },
+          "font": {
+            "color": {
+              "$value": "{base.palette.background.default}",
+              "$type": "color"
+            }
+          },
+          "hover": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.neutral.5}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.neutral.80}",
+                "$type": "color"
+              }
+            }
+          }
+        },
+        "unselected": {
+          "focus": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.neutral.80}",
+                "$type": "color"
+              }
+            }
+          },
+          "font": {
+            "color": {
+              "$value": "{base.palette.neutral.80}",
+              "$type": "color"
+            }
+          },
+          "hover": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.neutral.5}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.neutral.80}",
+                "$type": "color"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "base": {
+    "font": {
+      "line-height": {
+        "16": {
+          "$value": "16px",
+          "$type": "dimension"
+        },
+        "18": {
+          "$value": "18px",
+          "$type": "dimension"
+        },
+        "20": {
+          "$value": "20px",
+          "$type": "dimension"
+        },
+        "22": {
+          "$value": "22px",
+          "$type": "dimension"
+        },
+        "24": {
+          "$value": "24px",
+          "$type": "dimension"
+        },
+        "28": {
+          "$value": "28px",
+          "$type": "dimension"
+        },
+        "31": {
+          "$value": "31px",
+          "$type": "dimension"
+        },
+        "35": {
+          "$value": "35px",
+          "$type": "dimension"
+        },
+        "39": {
+          "$value": "39px",
+          "$type": "dimension"
+        },
+        "44": {
+          "$value": "44px",
+          "$type": "dimension"
+        }
+      }
+    }
+  }
+}

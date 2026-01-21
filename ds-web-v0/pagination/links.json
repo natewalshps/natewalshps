@@ -1,0 +1,103 @@
+{
+  "components": {
+    "pagination": {
+      "links": {
+        "chevron": {
+          "desktop": {
+            "height": {
+              "$value": "24px",
+              "$type": "dimension"
+            },
+            "width": {
+              "$value": "24px",
+              "$type": "dimension"
+            }
+          },
+          "mobile": {
+            "active": {
+              "background": {
+                "color": {
+                  "$value": "{base.palette.secondary.darkblue}",
+                  "$type": "color"
+                }
+              },
+              "border": {
+                "radius": {
+                  "all": {
+                    "$value": "2px",
+                    "$type": "dimension"
+                  }
+                }
+              },
+              "icon": {
+                "color": {
+                  "$value": "{base.palette.background.default}",
+                  "$type": "color"
+                }
+              }
+            },
+            "icon": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            },
+            "padding": {
+              "all": {
+                "$value": "6px",
+                "$type": "dimension"
+              }
+            }
+          }
+        },
+        "desktop": {
+          "font": {
+            "color": {
+              "$value": "{base.palette.secondary.linkblue}",
+              "$type": "color"
+            },
+            "line-height": {
+              "$value": "{base.typography.desktop.body2-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.body2-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.desktop.body2-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          },
+          "hover": {
+            "font": {
+              "color": {
+                "$value": "{base.palette.secondary.darkblue}",
+                "$type": "color"
+              }
+            },
+            "text-decoration": {
+              "$value": "underline"
+            }
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.body2-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.body2-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.mobile.body2-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        }
+      }
+    }
+  }
+}

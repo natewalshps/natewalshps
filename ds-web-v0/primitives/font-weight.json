@@ -1,0 +1,20 @@
+{
+  "base": {
+    "font": {
+      "weight": {
+        "bold": {
+          "$value": "700",
+          "$type": "fontWeight"
+        },
+        "regular": {
+          "$value": "400",
+          "$type": "fontWeight"
+        },
+        "xbold": {
+          "$value": "900",
+          "$type": "fontWeight"
+        }
+      }
+    }
+  }
+}

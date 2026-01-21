@@ -1,0 +1,38 @@
+{
+  "components": {
+    "alert": {
+      "error": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.tint.error}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "{base.palette.error.main}",
+              "$type": "color"
+            }
+          },
+          "icon": {
+            "color": {
+              "$value": "{base.palette.error.main}",
+              "$type": "color"
+            }
+          }
+        },
+        "title": {
+          "desktop": {
+            "font": {
+              "color": {
+                "$value": "{base.palette.error.main}",
+                "$type": "color"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

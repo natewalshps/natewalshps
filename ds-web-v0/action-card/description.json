@@ -1,0 +1,44 @@
+{
+  "components": {
+    "action-card": {
+      "description": {
+        "desktop": {
+          "font": {
+            "color": {
+              "$value": "#000000",
+              "$type": "color"
+            },
+            "line-height": {
+              "$value": "{base.typography.desktop.body1.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.body1.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.desktop.body1.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.body1.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.body1.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.mobile.body1.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        }
+      }
+    }
+  }
+}

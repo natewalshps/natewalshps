@@ -1,0 +1,76 @@
+{
+  "base": {
+    "border": {
+      "color": {
+        "blue-2": {
+          "$value": "{base.palette.secondary.linkblue}",
+          "$type": "color"
+        },
+        "blue-3": {
+          "$value": "{base.palette.secondary.darkblue}",
+          "$type": "color"
+        },
+        "gray-3": {
+          "$value": "{base.palette.neutral.20}",
+          "$type": "color"
+        }
+      },
+      "radius": {
+        "0": {
+          "$value": "0px",
+          "$type": "dimension"
+        },
+        "4": {
+          "$value": "4px",
+          "$type": "dimension"
+        },
+        "8": {
+          "$value": "8px",
+          "$type": "dimension"
+        },
+        "22": {
+          "$value": "22px",
+          "$type": "dimension"
+        },
+        "46": {
+          "$value": "46px",
+          "$type": "dimension"
+        },
+        "percent": {
+          "50": {
+            "$value": "50%",
+            "$type": "dimension"
+          }
+        }
+      },
+      "style": {
+        "solid": {
+          "$value": "solid",
+          "$type": "string"
+        }
+      },
+      "width": {
+        "lg": {
+          "$value": "6px",
+          "$type": "dimension"
+        },
+        "md": {
+          "$value": "4px",
+          "$type": "dimension"
+        },
+        "sm": {
+          "$value": "3px",
+          "$type": "dimension"
+        },
+        "xs": {
+          "$value": "2px",
+          "$type": "dimension"
+        },
+        "xxs": {
+          "$value": "1px",
+          "$type": "dimension"
+        }
+      }
+    }
+  }
+}

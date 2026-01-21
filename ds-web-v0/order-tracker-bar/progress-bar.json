@@ -1,0 +1,14 @@
+{
+  "components": {
+    "orderTrackerBar": {
+      "progressBar": {
+        "desktop": {
+          "color": {
+            "$value": "{base.palette.background.accent}",
+            "$type": "color"
+          }
+        }
+      }
+    }
+  }
+}

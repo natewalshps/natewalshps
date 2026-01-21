@@ -1,0 +1,44 @@
+{
+  "components": {
+    "action-card": {
+      "title": {
+        "desktop": {
+          "font": {
+            "color": {
+              "$value": "{base.palette.secondary.darkblue}",
+              "$type": "color"
+            },
+            "line-height": {
+              "$value": "{base.typography.desktop.heading5.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.heading5.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.desktop.heading5.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.heading5.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.heading5.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.mobile.heading5.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "components": {
+    "action-card": {
+      "backdrop-icon": {
+        "desktop": {
+          "height": {
+            "$value": "24px",
+            "$type": "dimension"
+          },
+          "width": {
+            "$value": "24px",
+            "$type": "dimension"
+          }
+        }
+      }
+    }
+  }
+}

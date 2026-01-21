@@ -1,0 +1,68 @@
+{
+  "components": {
+    "toggle": {
+      "unselected": {
+        "desktop": {
+          "active": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            },
+            "border": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              }
+            }
+          },
+          "background": {
+            "color": {
+              "$value": "{base.palette.background.default}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "{base.palette.secondary.linkblue}",
+              "$type": "color"
+            }
+          },
+          "font": {
+            "color": {
+              "$value": "{base.palette.secondary.linkblue}",
+              "$type": "color"
+            }
+          },
+          "hover": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            },
+            "border": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

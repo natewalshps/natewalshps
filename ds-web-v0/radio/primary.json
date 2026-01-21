@@ -1,0 +1,88 @@
+{
+  "components": {
+    "radio": {
+      "primary": {
+        "desktop": {
+          "active": {
+            "border": {
+              "color": {
+                "$value": "{base.palette.neutral.90}",
+                "$type": "color"
+              }
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "{base.palette.neutral.70}",
+              "$type": "color"
+            }
+          },
+          "disabled": {
+            "border": {
+              "color": {
+                "$value": "{base.palette.neutral.30}",
+                "$type": "color"
+              }
+            }
+          },
+          "focus": {
+            "border": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            }
+          },
+          "hover": {
+            "border": {
+              "color": {
+                "$value": "{base.palette.neutral.90}",
+                "$type": "color"
+              }
+            }
+          },
+          "selected": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            },
+            "border": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              }
+            },
+            "hover": {
+              "background": {
+                "color": {
+                  "$value": "{base.palette.secondary.darkblue}",
+                  "$type": "color"
+                }
+              },
+              "border": {
+                "color": {
+                  "$value": "{base.palette.secondary.darkblue}",
+                  "$type": "color"
+                }
+              }
+            },
+            "icon": {
+              "fill": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

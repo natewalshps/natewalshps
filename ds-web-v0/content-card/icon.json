@@ -1,0 +1,18 @@
+{
+  "components": {
+    "content-card": {
+      "icon": {
+        "desktop": {
+          "height": {
+            "$value": "48px",
+            "$type": "dimension"
+          },
+          "width": {
+            "$value": "48px",
+            "$type": "dimension"
+          }
+        }
+      }
+    }
+  }
+}

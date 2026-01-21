@@ -1,0 +1,60 @@
+{
+  "components": {
+    "card": {
+      "base": {
+        "desktop": {
+          "backgrounds": {
+            "color": {
+              "backdropShaded": {
+                "$value": "{base.rgba.lightGray}",
+                "$type": "color"
+              },
+              "highlight": {
+                "$value": "{base.palette.secondary.skyblue}",
+                "$type": "color"
+              },
+              "shaded": {
+                "$value": "{base.palette.neutral.2}",
+                "$type": "color"
+              },
+              "transparent": {
+                "$value": "{base.palette.transparent}",
+                "$type": "color"
+              },
+              "white": {
+                "$value": "white",
+                "$type": "color"
+              }
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "#B1B2B4",
+              "$type": "color"
+            },
+            "radius": {
+              "$value": "12px",
+              "$type": "dimension"
+            }
+          },
+          "padding": {
+            "$value": "24px",
+            "$type": "dimension"
+          }
+        },
+        "mobile": {
+          "border": {
+            "radius": {
+              "$value": "8px",
+              "$type": "dimension"
+            }
+          },
+          "padding": {
+            "$value": "16px",
+            "$type": "dimension"
+          }
+        }
+      }
+    }
+  }
+}

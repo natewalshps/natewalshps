@@ -1,0 +1,32 @@
+{
+  "components": {
+    "alert": {
+      "base": {
+        "desktop": {
+          "border": {
+            "radius": {
+              "all": {
+                "$value": "{base.border.desktop.radius.md}",
+                "$type": "dimension"
+              }
+            },
+            "style": {
+              "$value": "{base.border.style.solid}",
+              "$type": "string"
+            },
+            "width": {
+              "$value": "{base.border.width.xxs}",
+              "$type": "dimension"
+            }
+          },
+          "padding": {
+            "all": {
+              "$value": "16px 12px 16px 16px",
+              "$type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

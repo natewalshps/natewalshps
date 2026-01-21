@@ -1,0 +1,16 @@
+{
+  "components": {
+    "tooltip": {
+      "label-hc": {
+        "desktop": {
+          "font": {
+            "color": {
+              "$value": "{base.palette.neutral.80}",
+              "$type": "color"
+            }
+          }
+        }
+      }
+    }
+  }
+}

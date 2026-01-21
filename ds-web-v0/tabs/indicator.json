@@ -1,0 +1,40 @@
+{
+  "components": {
+    "tabs": {
+      "indicator": {
+        "desktop": {
+          "active": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.background.accent}",
+                "$type": "color"
+              }
+            },
+            "border": {
+              "radius": {
+                "all": {
+                  "$value": "4px 4px 0 0",
+                  "$type": "string"
+                }
+              }
+            },
+            "height": {
+              "$value": "4px",
+              "$type": "dimension"
+            }
+          },
+          "background": {
+            "color": {
+              "$value": "{base.palette.neutral.30}",
+              "$type": "color"
+            }
+          },
+          "height": {
+            "$value": "1px",
+            "$type": "dimension"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "components": {
+    "stepper": {
+      "icon": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.background.default}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "{base.palette.neutral.70}",
+              "$type": "color"
+            },
+            "radius": {
+              "all": {
+                "$value": "{base.border.radius.percent.50}",
+                "$type": "dimension"
+              }
+            },
+            "style": {
+              "$value": "{base.border.style.solid}",
+              "$type": "string"
+            },
+            "width": {
+              "$value": "{base.border.width.xs}",
+              "$type": "dimension"
+            }
+          },
+          "completed": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.secondary.darkblue}",
+                "$type": "color"
+              }
+            }
+          },
+          "current": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.neutral.90}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              }
+            }
+          },
+          "font": {
+            "color": {
+              "$value": "{base.palette.neutral.70}",
+              "$type": "color"
+            },
+            "line-height": {
+              "$value": "{base.typography.desktop.subtitle2-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.subtitle2-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.desktop.subtitle2-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          },
+          "height": {
+            "$value": "20px",
+            "$type": "dimension"
+          },
+          "width": {
+            "$value": "20px",
+            "$type": "dimension"
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.subtitle2-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.subtitle2-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.mobile.subtitle2-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        }
+      }
+    }
+  }
+}

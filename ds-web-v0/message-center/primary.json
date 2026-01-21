@@ -1,0 +1,14 @@
+{
+  "components": {
+    "messageCenter": {
+      "desktop": {
+        "background": {
+          "color": {
+            "$value": "{base.palette.info.main}",
+            "$type": "color"
+          }
+        }
+      }
+    }
+  }
+}

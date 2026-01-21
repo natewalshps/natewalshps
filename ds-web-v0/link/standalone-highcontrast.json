@@ -1,0 +1,168 @@
+{
+  "components": {
+    "link": {
+      "standalone-hc": {
+        "desktop": {
+          "lg": {
+            "font": {
+              "family": {
+                "$value": "{base.font.family}",
+                "$type": "fontFamily"
+              },
+              "line-height": {
+                "$value": "{base.font.line-height.24}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "18px",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "700",
+                "$type": "fontWeight"
+              }
+            }
+          },
+          "md": {
+            "active": {
+              "font": {
+                "color": {
+                  "$value": "{base.palette.background.default}",
+                  "$type": "color"
+                }
+              }
+            },
+            "focus": {
+              "outline": {
+                "color": {
+                  "$value": "{base.palette.background.default}",
+                  "$type": "color"
+                },
+                "style": {
+                  "$value": "solid",
+                  "$type": "string"
+                },
+                "width": {
+                  "$value": "2px",
+                  "$type": "dimension"
+                }
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              },
+              "family": {
+                "$value": "{base.font.family}",
+                "$type": "fontFamily"
+              },
+              "line-height": {
+                "$value": "{base.font.line-height.20}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "16px",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "700",
+                "$type": "fontWeight"
+              }
+            },
+            "hover": {
+              "font": {
+                "color": {
+                  "$value": "{base.palette.background.default}",
+                  "$type": "color"
+                }
+              }
+            }
+          },
+          "sm": {
+            "font": {
+              "family": {
+                "$value": "{base.font.family}",
+                "$type": "fontFamily"
+              },
+              "line-height": {
+                "$value": "{base.font.line-height.18}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "14.22px",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "700",
+                "$type": "fontWeight"
+              }
+            }
+          }
+        },
+        "mobile": {
+          "lg": {
+            "font": {
+              "family": {
+                "$value": "{base.font.family}",
+                "$type": "fontFamily"
+              },
+              "line-height": {
+                "$value": "{base.font.line-height.24}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "18px",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "700",
+                "$type": "fontWeight"
+              }
+            }
+          },
+          "md": {
+            "font": {
+              "family": {
+                "$value": "{base.font.family}",
+                "$type": "fontFamily"
+              },
+              "line-height": {
+                "$value": "{base.font.line-height.20}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "16px",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "700",
+                "$type": "fontWeight"
+              }
+            }
+          },
+          "sm": {
+            "font": {
+              "family": {
+                "$value": "{base.font.family}",
+                "$type": "fontFamily"
+              },
+              "line-height": {
+                "$value": "{base.font.line-height.18}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "14.22px",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "700",
+                "$type": "fontWeight"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

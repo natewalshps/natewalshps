@@ -1,0 +1,16 @@
+{
+  "components": {
+    "tooltip": {
+      "arrow": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.neutral.80}",
+              "$type": "color"
+            }
+          }
+        }
+      }
+    }
+  }
+}

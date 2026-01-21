@@ -1,0 +1,44 @@
+{
+  "components": {
+    "popover-tooltip": {
+      "title": {
+        "desktop": {
+          "font": {
+            "color": {
+              "$value": "{base.palette.neutral.80}",
+              "$type": "color"
+            },
+            "line-height": {
+              "$value": "{base.typography.desktop.body1-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.body1-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.desktop.body1-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.body1-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.body1-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.mobile.body1-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        }
+      }
+    }
+  }
+}

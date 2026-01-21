@@ -1,0 +1,28 @@
+{
+  "components": {
+    "templates": {
+      "chonktainer": {
+        "desktop": {
+          "border": {
+            "radius": {
+              "all": {
+                "$value": "64px",
+                "$type": "dimension"
+              }
+            }
+          }
+        },
+        "mobile": {
+          "border": {
+            "radius": {
+              "all": {
+                "$value": "24px",
+                "$type": "dimension"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

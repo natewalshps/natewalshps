@@ -1,0 +1,16 @@
+{
+  "components": {
+    "datepicker": {
+      "chevron": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.neutral.70}",
+              "$type": "color"
+            }
+          }
+        }
+      }
+    }
+  }
+}

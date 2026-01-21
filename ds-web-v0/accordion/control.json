@@ -1,0 +1,24 @@
+{
+  "components": {
+    "accordion": {
+      "control": {
+        "desktop": {
+          "height": {
+            "$value": "36px",
+            "$type": "dimension"
+          },
+          "icon": {
+            "color": {
+              "$value": "{base.palette.neutral.80}",
+              "$type": "color"
+            }
+          },
+          "width": {
+            "$value": "36px",
+            "$type": "dimension"
+          }
+        }
+      }
+    }
+  }
+}

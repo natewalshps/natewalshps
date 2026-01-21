@@ -1,0 +1,64 @@
+{
+  "base": {
+    "focus": {
+      "shadow": {
+        "color": {
+          "blue": {
+            "$value": "{base.palette.secondary.darkblue}",
+            "$type": "color"
+          },
+          "gray": {
+            "$value": "rgba(0,0,0,0.5)",
+            "$type": "color"
+          }
+        },
+        "offset": {
+          "x": {
+            "$value": "0",
+            "$type": "dimension"
+          },
+          "y": {
+            "$value": "0",
+            "$type": "dimension"
+          }
+        },
+        "radius": {
+          "blur": {
+            "$value": "0",
+            "$type": "dimension"
+          },
+          "spread": {
+            "$value": "4px",
+            "$type": "dimension"
+          }
+        }
+      },
+      "shadowwhite": {
+        "color": {
+          "$value": "rgba(255,255,255,1)",
+          "$type": "color"
+        },
+        "offset": {
+          "x": {
+            "$value": "0",
+            "$type": "dimension"
+          },
+          "y": {
+            "$value": "0",
+            "$type": "dimension"
+          }
+        },
+        "radius": {
+          "blur": {
+            "$value": "0",
+            "$type": "dimension"
+          },
+          "spread": {
+            "$value": "2px",
+            "$type": "dimension"
+          }
+        }
+      }
+    }
+  }
+}

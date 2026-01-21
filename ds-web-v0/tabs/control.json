@@ -1,0 +1,34 @@
+{
+  "components": {
+    "tabs": {
+      "control": {
+        "desktop": {
+          "margin": {
+            "bottom": {
+              "$value": "13px",
+              "$type": "dimension"
+            }
+          }
+        },
+        "mobile": {
+          "icon": {
+            "color": {
+              "$value": "{base.palette.secondary.linkblue}",
+              "$type": "color"
+            },
+            "margin": {
+              "bottom": {
+                "$value": "13px",
+                "$type": "dimension"
+              },
+              "left": {
+                "$value": "16px",
+                "$type": "dimension"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

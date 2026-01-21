@@ -1,0 +1,86 @@
+{
+  "components": {
+    "link": {
+      "heading-hc": {
+        "h5": {
+          "desktop": {
+            "active": {
+              "font": {
+                "color": {
+                  "$value": "{base.palette.background.default}",
+                  "$type": "color"
+                }
+              }
+            },
+            "focus": {
+              "outline": {
+                "color": {
+                  "$value": "{base.palette.background.default}",
+                  "$type": "color"
+                },
+                "style": {
+                  "$value": "{base.focus.outline.style}",
+                  "$type": "string"
+                },
+                "width": {
+                  "$value": "{base.focus.outline.width}",
+                  "$type": "dimension"
+                }
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              },
+              "family": {
+                "$value": "{base.font.family}",
+                "$type": "fontFamily"
+              },
+              "line-height": {
+                "$value": "{base.typography.desktop.heading5.$value.lineHeight}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "{base.typography.desktop.heading5.$value.fontSize}",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "{base.typography.desktop.heading5.$value.fontWeight}",
+                "$type": "fontWeight"
+              }
+            },
+            "hover": {
+              "font": {
+                "color": {
+                  "$value": "{base.palette.background.default}",
+                  "$type": "color"
+                }
+              }
+            }
+          },
+          "mobile": {
+            "font": {
+              "family": {
+                "$value": "{base.font.family}",
+                "$type": "fontFamily"
+              },
+              "line-height": {
+                "$value": "{base.typography.mobile.heading5.$value.lineHeight}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "{base.typography.mobile.heading5.$value.fontSize}",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "{base.typography.mobile.heading5.$value.fontWeight}",
+                "$type": "fontWeight"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "components": {
+    "tooltip": {
+      "container": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.neutral.80}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "radius": {
+              "all": {
+                "$value": "4px",
+                "$type": "dimension"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

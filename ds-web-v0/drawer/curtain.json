@@ -1,0 +1,20 @@
+{
+  "components": {
+    "drawer": {
+      "curtain": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.neutral.90}",
+              "$type": "color"
+            }
+          },
+          "opacity": {
+            "$value": "0.7",
+            "$type": "number"
+          }
+        }
+      }
+    }
+  }
+}

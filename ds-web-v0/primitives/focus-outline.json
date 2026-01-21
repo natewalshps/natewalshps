@@ -1,0 +1,40 @@
+{
+  "base": {
+    "focus": {
+      "outline": {
+        "color": {
+          "$value": "{base.palette.secondary.linkblue}",
+          "$type": "color"
+        },
+        "high-contrast": {
+          "color": {
+            "$value": "#FFFFFF",
+            "$type": "color"
+          }
+        },
+        "offset": {
+          "large": {
+            "$value": "3px",
+            "$type": "dimension"
+          },
+          "medium": {
+            "$value": "2px",
+            "$type": "dimension"
+          },
+          "small": {
+            "$value": "1px",
+            "$type": "dimension"
+          }
+        },
+        "style": {
+          "$value": "solid",
+          "$type": "string"
+        },
+        "width": {
+          "$value": "2px",
+          "$type": "dimension"
+        }
+      }
+    }
+  }
+}

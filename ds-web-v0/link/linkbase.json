@@ -1,0 +1,26 @@
+{
+  "components": {
+    "link": {
+      "base": {
+        "desktop": {
+          "focus": {
+            "outline": {
+              "color": {
+                "$value": "{base.palette.secondary.darkblue}",
+                "$type": "color"
+              },
+              "style": {
+                "$value": "{base.focus.outline.style}",
+                "$type": "string"
+              },
+              "width": {
+                "$value": "{base.focus.outline.width}",
+                "$type": "dimension"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

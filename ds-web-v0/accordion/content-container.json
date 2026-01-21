@@ -1,0 +1,16 @@
+{
+  "components": {
+    "accordion": {
+      "content-container": {
+        "desktop": {
+          "padding": {
+            "all": {
+              "$value": "16px 24px 24px 24px",
+              "$type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

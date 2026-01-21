@@ -1,0 +1,44 @@
+{
+  "components": {
+    "modal": {
+      "header": {
+        "desktop": {
+          "font": {
+            "color": {
+              "$value": "{base.palette.secondary.darkblue}",
+              "$type": "color"
+            },
+            "line-height": {
+              "$value": "{base.typography.desktop.heading3.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.heading3.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.desktop.heading3.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.heading3.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.heading3.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.mobile.heading3.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        }
+      }
+    }
+  }
+}

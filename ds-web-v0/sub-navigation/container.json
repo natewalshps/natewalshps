@@ -1,0 +1,52 @@
+{
+  "components": {
+    "subnav": {
+      "desktop": {
+        "hover": {
+          "background": {
+            "color": {
+              "$value": "rgba(25,25,26,0.04)",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "radius": {
+              "$value": "8px",
+              "$type": "dimension"
+            }
+          }
+        },
+        "padding": {
+          "all": {
+            "$value": "8px 16px",
+            "$type": "string"
+          }
+        },
+        "selected": {
+          "focus": {
+            "pipe": {
+              "background": {
+                "color": {
+                  "$value": "{base.palette.background.accent}",
+                  "$type": "color"
+                }
+              }
+            }
+          },
+          "pipe": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.background.accent}",
+                "$type": "color"
+              }
+            },
+            "width": {
+              "$value": "4px",
+              "$type": "dimension"
+            }
+          }
+        }
+      }
+    }
+  }
+}

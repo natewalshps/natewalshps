@@ -1,0 +1,26 @@
+{
+  "components": {
+    "content-card": {
+      "nested": {
+        "subsection": {
+          "desktop": {
+            "border": {
+              "radius": {
+                "all": {
+                  "$value": "8px",
+                  "$type": "dimension"
+                }
+              }
+            },
+            "padding": {
+              "all": {
+                "$value": "16px",
+                "$type": "dimension"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

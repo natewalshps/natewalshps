@@ -1,0 +1,16 @@
+{
+  "base": {
+    "icon": {
+      "color": {
+        "primary": {
+          "$value": "{base.palette.secondary.darkblue}",
+          "$type": "color"
+        },
+        "secondary": {
+          "$value": "{base.palette.background.accent}",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}

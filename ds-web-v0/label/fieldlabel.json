@@ -1,0 +1,68 @@
+{
+  "components": {
+    "label": {
+      "fieldlabel": {
+        "desktop": {
+          "font": {
+            "color": {
+              "$value": "{base.palette.neutral.70}",
+              "$type": "color"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.body1.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.font.weight.bold}",
+              "$type": "fontWeight"
+            }
+          },
+          "instruction": {
+            "font": {
+              "weight": {
+                "$value": "{base.font.weight.regular}",
+                "$type": "fontWeight"
+              }
+            },
+            "margin": {
+              "bottom": {
+                "$value": "{base.spacing.xs}",
+                "$type": "dimension"
+              },
+              "left": {
+                "$value": "{base.spacing.none}",
+                "$type": "dimension"
+              },
+              "right": {
+                "$value": "{base.spacing.none}",
+                "$type": "dimension"
+              },
+              "top": {
+                "$value": "{base.spacing.xxs}",
+                "$type": "dimension"
+              }
+            }
+          },
+          "margin": {
+            "bottom": {
+              "$value": "{base.spacing.xs}",
+              "$type": "dimension"
+            },
+            "left": {
+              "$value": "{base.spacing.xs}",
+              "$type": "dimension"
+            },
+            "right": {
+              "$value": "{base.spacing.sm}",
+              "$type": "dimension"
+            },
+            "top": {
+              "$value": "{base.spacing.xs}",
+              "$type": "dimension"
+            }
+          }
+        }
+      }
+    }
+  }
+}

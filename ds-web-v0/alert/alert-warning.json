@@ -1,0 +1,38 @@
+{
+  "components": {
+    "alert": {
+      "warning": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.warning.light}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "{base.palette.warning.main}",
+              "$type": "color"
+            }
+          },
+          "icon": {
+            "color": {
+              "$value": "#C9730D",
+              "$type": "color"
+            }
+          }
+        },
+        "title": {
+          "desktop": {
+            "font": {
+              "color": {
+                "$value": "{base.palette.text.secondary}",
+                "$type": "color"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

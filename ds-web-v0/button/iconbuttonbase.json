@@ -1,0 +1,114 @@
+{
+  "components": {
+    "iconbutton": {
+      "base": {
+        "desktop": {
+          "focus": {
+            "outline": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              },
+              "style": {
+                "$value": "{base.border.style.solid}",
+                "$type": "string"
+              },
+              "width": {
+                "$value": "2px",
+                "$type": "dimension"
+              }
+            }
+          },
+          "height": {
+            "max": {
+              "$value": "{base.dimensions.40}",
+              "$type": "dimension"
+            }
+          },
+          "padding": {
+            "bottom": {
+              "$value": "8px",
+              "$type": "dimension"
+            },
+            "left": {
+              "$value": "8px",
+              "$type": "dimension"
+            },
+            "right": {
+              "$value": "8px",
+              "$type": "dimension"
+            },
+            "top": {
+              "$value": "8px",
+              "$type": "dimension"
+            }
+          },
+          "small": {
+            "height": {
+              "max": {
+                "$value": "32px",
+                "$type": "dimension"
+              }
+            },
+            "padding": {
+              "bottom": {
+                "$value": "7px",
+                "$type": "dimension"
+              },
+              "left": {
+                "$value": "7px",
+                "$type": "dimension"
+              },
+              "right": {
+                "$value": "7px",
+                "$type": "dimension"
+              },
+              "top": {
+                "$value": "7px",
+                "$type": "dimension"
+              }
+            },
+            "width": {
+              "max": {
+                "$value": "32px",
+                "$type": "dimension"
+              },
+              "min": {
+                "$value": "32px",
+                "$type": "dimension"
+              }
+            }
+          },
+          "width": {
+            "max": {
+              "$value": "{base.dimensions.40}",
+              "$type": "dimension"
+            },
+            "min": {
+              "$value": "32px",
+              "$type": "dimension"
+            }
+          }
+        },
+        "mobile": {
+          "height": {
+            "max": {
+              "$value": "{base.dimensions.40}",
+              "$type": "dimension"
+            }
+          },
+          "width": {
+            "max": {
+              "$value": "{base.dimensions.40}",
+              "$type": "dimension"
+            },
+            "min": {
+              "$value": "32px",
+              "$type": "dimension"
+            }
+          }
+        }
+      }
+    }
+  }
+}

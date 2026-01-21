@@ -1,0 +1,28 @@
+{
+  "components": {
+    "checkbox": {
+      "primary": {
+        "error": {
+          "icon": {
+            "desktop": {
+              "font": {
+                "color": {
+                  "$value": "{base.palette.error.dark}",
+                  "$type": "color"
+                }
+              },
+              "height": {
+                "$value": "15px",
+                "$type": "dimension"
+              },
+              "width": {
+                "$value": "15px",
+                "$type": "dimension"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

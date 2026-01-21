@@ -1,0 +1,28 @@
+{
+  "components": {
+    "label": {
+      "radiobtn": {
+        "desktop": {
+          "margin": {
+            "bottom": {
+              "$value": "{base.spacing.none}",
+              "$type": "dimension"
+            },
+            "left": {
+              "$value": "{base.spacing.none}",
+              "$type": "dimension"
+            },
+            "right": {
+              "$value": "{base.spacing.none}",
+              "$type": "dimension"
+            },
+            "top": {
+              "$value": "{base.spacing.none}",
+              "$type": "dimension"
+            }
+          }
+        }
+      }
+    }
+  }
+}

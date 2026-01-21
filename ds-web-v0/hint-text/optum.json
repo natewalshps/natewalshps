@@ -1,0 +1,32 @@
+{
+  "components": {
+    "hint": {
+      "desktop": {
+        "font": {
+          "size": {
+            "$value": "{base.typography.desktop.body2.$value.fontSize}",
+            "$type": "dimension"
+          }
+        },
+        "margin": {
+          "bottom": {
+            "$value": "{base.spacing.none}",
+            "$type": "dimension"
+          },
+          "left": {
+            "$value": "{base.spacing.none}",
+            "$type": "dimension"
+          },
+          "right": {
+            "$value": "{base.spacing.none}",
+            "$type": "dimension"
+          },
+          "top": {
+            "$value": "{base.spacing.none}",
+            "$type": "dimension"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "components": {
+    "button": {
+      "primary-hc": {
+        "desktop": {
+          "active": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.neutral.10}",
+                "$type": "color"
+              }
+            },
+            "border": {
+              "color": {
+                "$value": "{base.palette.neutral.10}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.extraColors.darkerBlue}",
+                "$type": "color"
+              }
+            }
+          },
+          "background": {
+            "color": {
+              "$value": "{base.palette.background.default}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "{base.palette.background.default}",
+              "$type": "color"
+            },
+            "radius": {
+              "all": {
+                "$value": "{base.border.radius.46}",
+                "$type": "dimension"
+              }
+            },
+            "style": {
+              "$value": "{base.border.style.solid}",
+              "$type": "string"
+            },
+            "width": {
+              "$value": "{base.border.width.xxs}",
+              "$type": "dimension"
+            }
+          },
+          "focus": {
+            "outline": {
+              "color": {
+                "$value": "{base.focus.outline.high-contrast.color}",
+                "$type": "color"
+              },
+              "offset": {
+                "$value": "{components.button.base.desktop.focus.outline.offset}",
+                "$type": "dimension"
+              },
+              "radius": {
+                "all": {
+                  "$value": "{components.button.base.desktop.focus.outline.radius.all}",
+                  "$type": "dimension"
+                }
+              },
+              "style": {
+                "$value": "{base.focus.outline.style}",
+                "$type": "string"
+              },
+              "width": {
+                "$value": "{base.focus.outline.width}",
+                "$type": "dimension"
+              }
+            }
+          },
+          "font": {
+            "color": {
+              "$value": "{base.palette.secondary.darkblue}",
+              "$type": "color"
+            },
+            "line-height": {
+              "$value": "{base.font.line-height.20}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.body1.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.font.weight.bold}",
+              "$type": "fontWeight"
+            }
+          },
+          "height": {
+            "max": {
+              "$value": "{base.dimensions.40}",
+              "$type": "dimension"
+            }
+          },
+          "hover": {
+            "background": {
+              "color": {
+                "$value": "{base.extraColors.light}",
+                "$type": "color"
+              }
+            },
+            "border": {
+              "color": {
+                "$value": "{base.extraColors.light}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.extraColors.dark}",
+                "$type": "color"
+              }
+            }
+          },
+          "padding": {
+            "all": {
+              "$value": "10px 24px",
+              "$type": "string"
+            }
+          },
+          "width": {
+            "min": {
+              "$value": "{base.dimensions.145}",
+              "$type": "dimension"
+            }
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.body1-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.body1-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.mobile.body1-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          },
+          "height": {
+            "max": {
+              "$value": "{base.dimensions.44}",
+              "$type": "dimension"
+            }
+          },
+          "padding": {
+            "bottom": {
+              "$value": "10px",
+              "$type": "dimension"
+            },
+            "left": {
+              "$value": "24px",
+              "$type": "dimension"
+            },
+            "right": {
+              "$value": "24px",
+              "$type": "dimension"
+            },
+            "top": {
+              "$value": "10px",
+              "$type": "dimension"
+            }
+          },
+          "width": {
+            "min": {
+              "$value": "{base.dimensions.145}",
+              "$type": "dimension"
+            }
+          }
+        }
+      }
+    }
+  }
+}

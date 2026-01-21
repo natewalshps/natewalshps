@@ -1,0 +1,16 @@
+{
+  "components": {
+    "popover-tooltip": {
+      "close": {
+        "desktop": {
+          "icon": {
+            "color": {
+              "$value": "{base.palette.neutral.80}",
+              "$type": "color"
+            }
+          }
+        }
+      }
+    }
+  }
+}

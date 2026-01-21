@@ -1,0 +1,18 @@
+{
+  "components": {
+    "toggle": {
+      "firstbtn": {
+        "desktop": {
+          "border": {
+            "radius": {
+              "all": {
+                "$value": "4px 0px 0px 4px",
+                "$type": "dimension"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

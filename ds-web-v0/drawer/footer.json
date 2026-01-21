@@ -1,0 +1,62 @@
+{
+  "components": {
+    "drawer": {
+      "footer": {
+        "desktop": {
+          "border": {
+            "color": {
+              "$value": "{base.palette.neutral.30}",
+              "$type": "color"
+            },
+            "style": {
+              "$value": "solid",
+              "$type": "string"
+            },
+            "width": {
+              "$value": "1px",
+              "$type": "dimension"
+            }
+          },
+          "padding": {
+            "bottom": {
+              "$value": "24px",
+              "$type": "dimension"
+            },
+            "left": {
+              "$value": "40px",
+              "$type": "dimension"
+            },
+            "right": {
+              "$value": "40px",
+              "$type": "dimension"
+            },
+            "top": {
+              "$value": "24px",
+              "$type": "dimension"
+            }
+          }
+        },
+        "mobile": {
+          "padding": {
+            "bottom": {
+              "$value": "16px",
+              "$type": "dimension"
+            },
+            "left": {
+              "$value": "16px",
+              "$type": "dimension"
+            },
+            "right": {
+              "$value": "16px",
+              "$type": "dimension"
+            },
+            "top": {
+              "$value": "16px",
+              "$type": "dimension"
+            }
+          }
+        }
+      }
+    }
+  }
+}

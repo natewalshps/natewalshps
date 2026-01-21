@@ -1,0 +1,30 @@
+{
+  "base": {
+    "extraColors": {
+      "black": {
+        "$value": "#000000",
+        "$type": "color"
+      },
+      "dark": {
+        "$value": "#001D5B",
+        "$type": "color"
+      },
+      "darkBlue": {
+        "$value": "#042469",
+        "$type": "color"
+      },
+      "darkerBlue": {
+        "$value": "#00184D",
+        "$type": "color"
+      },
+      "darkestBlue": {
+        "$value": "#052364",
+        "$type": "color"
+      },
+      "light": {
+        "$value": "#F3F3F3",
+        "$type": "color"
+      }
+    }
+  }
+}

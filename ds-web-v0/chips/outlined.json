@@ -1,0 +1,158 @@
+{
+  "components": {
+    "chip": {
+      "outlined": {
+        "desktop": {
+          "lg": {
+            "font": {
+              "line-height": {
+                "$value": "{base.typography.desktop.body2.$value.lineHeight}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "{base.typography.desktop.body2.$value.fontSize}",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "{base.typography.desktop.body2.$value.fontWeight}",
+                "$type": "fontWeight"
+              }
+            },
+            "icon": {
+              "height": {
+                "$value": "18px",
+                "$type": "dimension"
+              },
+              "width": {
+                "$value": "18px",
+                "$type": "dimension"
+              }
+            }
+          },
+          "sm": {
+            "background": {
+              "$value": "{base.palette.transparent}",
+              "$type": "color"
+            },
+            "border": {
+              "color": {
+                "$value": "{base.palette.neutral.70}",
+                "$type": "color"
+              },
+              "radius": {
+                "bottom-left": {
+                  "$value": "{base.border.radius.4}",
+                  "$type": "dimension"
+                },
+                "bottom-right": {
+                  "$value": "{base.border.radius.4}",
+                  "$type": "dimension"
+                },
+                "top-left": {
+                  "$value": "{base.border.radius.4}",
+                  "$type": "dimension"
+                },
+                "top-right": {
+                  "$value": "{base.border.radius.4}",
+                  "$type": "dimension"
+                }
+              },
+              "style": {
+                "$value": "{base.border.style.solid}",
+                "$type": "string"
+              },
+              "width": {
+                "$value": "{base.border.width.xxs}",
+                "$type": "dimension"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.neutral.80}",
+                "$type": "color"
+              },
+              "line-height": {
+                "$value": "{base.typography.desktop.subtitle2.$value.lineHeight}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "{base.typography.desktop.subtitle2.$value.fontSize}",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "{base.typography.desktop.subtitle2.$value.fontWeight}",
+                "$type": "fontWeight"
+              }
+            },
+            "icon": {
+              "color": {
+                "$value": "{base.palette.neutral.70}",
+                "$type": "color"
+              },
+              "height": {
+                "$value": "15px",
+                "$type": "dimension"
+              },
+              "width": {
+                "$value": "15px",
+                "$type": "dimension"
+              }
+            },
+            "padding": {
+              "bottom": {
+                "$value": "4px",
+                "$type": "dimension"
+              },
+              "left": {
+                "$value": "8px",
+                "$type": "dimension"
+              },
+              "right": {
+                "$value": "8px",
+                "$type": "dimension"
+              },
+              "top": {
+                "$value": "4px",
+                "$type": "dimension"
+              }
+            }
+          }
+        },
+        "mobile": {
+          "lg": {
+            "font": {
+              "line-height": {
+                "$value": "{base.typography.mobile.body2.$value.lineHeight}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "{base.typography.mobile.body2.$value.fontSize}",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "{base.typography.desktop.body2.$value.fontWeight}",
+                "$type": "fontWeight"
+              }
+            }
+          },
+          "sm": {
+            "font": {
+              "line-height": {
+                "$value": "{base.typography.mobile.subtitle2.$value.lineHeight}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "{base.typography.mobile.subtitle2.$value.fontSize}",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "{base.typography.mobile.subtitle2.$value.fontWeight}",
+                "$type": "fontWeight"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

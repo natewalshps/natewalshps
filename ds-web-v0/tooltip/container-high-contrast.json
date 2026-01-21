@@ -1,0 +1,16 @@
+{
+  "components": {
+    "tooltip": {
+      "container-hc": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.neutral.10}",
+              "$type": "color"
+            }
+          }
+        }
+      }
+    }
+  }
+}

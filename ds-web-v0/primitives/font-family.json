@@ -1,0 +1,10 @@
+{
+  "base": {
+    "font": {
+      "family": {
+        "$value": "\"EnterpriseSansVF\", Arial, sans-serif",
+        "$type": "fontFamily"
+      }
+    }
+  }
+}

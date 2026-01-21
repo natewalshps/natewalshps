@@ -1,0 +1,58 @@
+{
+  "components": {
+    "content-card": {
+      "nested": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.background.default}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "{base.palette.neutral.42}",
+              "$type": "color"
+            },
+            "radius": {
+              "all": {
+                "$value": "24px",
+                "$type": "dimension"
+              }
+            },
+            "style": {
+              "$value": "{base.border.style.solid}",
+              "$type": "string"
+            },
+            "width": {
+              "$value": "{base.border.width.xxs}",
+              "$type": "dimension"
+            }
+          },
+          "contrast": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.neutral.2}",
+                "$type": "color"
+              }
+            }
+          },
+          "padding": {
+            "all": {
+              "$value": "32px",
+              "$type": "dimension"
+            }
+          },
+          "promo": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.secondary.skyblue}",
+                "$type": "color"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

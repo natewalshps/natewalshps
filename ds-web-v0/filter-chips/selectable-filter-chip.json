@@ -1,0 +1,212 @@
+{
+  "components": {
+    "filterchip": {
+      "selectable": {
+        "desktop": {
+          "active": {
+            "background": {
+              "color": {
+                "$value": "#00184D",
+                "$type": "color"
+              }
+            },
+            "border": {
+              "color": {
+                "$value": "#00184D",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "#FFFFFF",
+                "$type": "color"
+              }
+            }
+          },
+          "background": {
+            "color": {
+              "$value": "{base.palette.background.default}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "{base.palette.secondary.linkblue}",
+              "$type": "color"
+            },
+            "radius": {
+              "all": {
+                "$value": "4px",
+                "$type": "dimension"
+              }
+            },
+            "style": {
+              "$value": "{base.border.style.solid}",
+              "$type": "string"
+            },
+            "width": {
+              "$value": "{base.border.width.xxs}",
+              "$type": "dimension"
+            }
+          },
+          "font": {
+            "color": {
+              "$value": "{base.palette.secondary.linkblue}",
+              "$type": "color"
+            },
+            "line-height": {
+              "$value": "{base.typography.desktop.subtitle2-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.desktop.subtitle2-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.desktop.subtitle2-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          },
+          "hover": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            },
+            "border": {
+              "color": {
+                "$value": "{base.palette.secondary.linkblue}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              }
+            }
+          },
+          "padding": {
+            "all": {
+              "$value": "4px 8px 4px 8px",
+              "$type": "string"
+            }
+          },
+          "selected": {
+            "background": {
+              "color": {
+                "$value": "{base.palette.secondary.darkblue}",
+                "$type": "color"
+              }
+            },
+            "border": {
+              "color": {
+                "$value": "{base.palette.secondary.darkblue}",
+                "$type": "color"
+              }
+            },
+            "font": {
+              "color": {
+                "$value": "{base.palette.background.default}",
+                "$type": "color"
+              }
+            },
+            "hover": {
+              "background": {
+                "color": {
+                  "$value": "#001D5B",
+                  "$type": "color"
+                }
+              },
+              "border": {
+                "color": {
+                  "$value": "#001D5B",
+                  "$type": "color"
+                }
+              },
+              "font": {
+                "color": {
+                  "$value": "{base.palette.background.default}",
+                  "$type": "color"
+                }
+              }
+            },
+            "icon": {
+              "background": {
+                "color": {
+                  "$value": "{base.palette.background.default}",
+                  "$type": "color"
+                }
+              },
+              "height": {
+                "$value": "18px",
+                "$type": "dimension"
+              },
+              "width": {
+                "$value": "18px",
+                "$type": "dimension"
+              }
+            }
+          }
+        },
+        "md": {
+          "desktop": {
+            "font": {
+              "line-height": {
+                "$value": "{base.typography.desktop.body2-bold.$value.lineHeight}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "{base.typography.desktop.body2-bold.$value.fontSize}",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "{base.typography.desktop.body2-bold.$value.fontWeight}",
+                "$type": "fontWeight"
+              }
+            },
+            "padding": {
+              "all": {
+                "$value": "7px 8px 7px 8px",
+                "$type": "string"
+              }
+            }
+          },
+          "mobile": {
+            "font": {
+              "line-height": {
+                "$value": "{base.typography.mobile.body2-bold.$value.lineHeight}",
+                "$type": "dimension"
+              },
+              "size": {
+                "$value": "{base.typography.mobile.body2-bold.$value.fontSize}",
+                "$type": "dimension"
+              },
+              "weight": {
+                "$value": "{base.typography.mobile.body2-bold.$value.fontWeight}",
+                "$type": "fontWeight"
+              }
+            }
+          }
+        },
+        "mobile": {
+          "font": {
+            "line-height": {
+              "$value": "{base.typography.mobile.subtitle2-bold.$value.lineHeight}",
+              "$type": "dimension"
+            },
+            "size": {
+              "$value": "{base.typography.mobile.subtitle2-bold.$value.fontSize}",
+              "$type": "dimension"
+            },
+            "weight": {
+              "$value": "{base.typography.mobile.subtitle2-bold.$value.fontWeight}",
+              "$type": "fontWeight"
+            }
+          }
+        }
+      }
+    }
+  }
+}

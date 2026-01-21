@@ -1,0 +1,40 @@
+{
+  "components": {
+    "orderTrackerBar": {
+      "bar": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.background.default}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "{base.palette.secondary.darkblue}",
+              "$type": "color"
+            },
+            "radius": {
+              "all": {
+                "$value": "20px",
+                "$type": "dimension"
+              }
+            },
+            "style": {
+              "$value": "{base.border.style.solid}",
+              "$type": "string"
+            },
+            "width": {
+              "$value": "{base.border.width.xs}",
+              "$type": "dimension"
+            }
+          },
+          "height": {
+            "$value": "16px",
+            "$type": "dimension"
+          }
+        }
+      }
+    }
+  }
+}

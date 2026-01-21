@@ -1,0 +1,24 @@
+{
+  "components": {
+    "filterchip": {
+      "tooltip": {
+        "desktop": {
+          "font": {
+            "color": {
+              "$value": "{base.palette.secondary.linkblue}",
+              "$type": "color"
+            }
+          },
+          "height": {
+            "$value": "18px",
+            "$type": "dimension"
+          },
+          "width": {
+            "$value": "18px",
+            "$type": "dimension"
+          }
+        }
+      }
+    }
+  }
+}

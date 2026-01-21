@@ -1,0 +1,30 @@
+{
+  "components": {
+    "stepper": {
+      "container": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "rgba(25,25,26,0.08)",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "radius": {
+              "all": {
+                "$value": "4px",
+                "$type": "dimension"
+              }
+            }
+          },
+          "padding": {
+            "all": {
+              "$value": "4px",
+              "$type": "dimension"
+            }
+          }
+        }
+      }
+    }
+  }
+}

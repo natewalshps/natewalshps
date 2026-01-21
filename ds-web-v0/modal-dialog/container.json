@@ -1,0 +1,96 @@
+{
+  "components": {
+    "modal": {
+      "container": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.background.default}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "radius": {
+              "all": {
+                "$value": "12px",
+                "$type": "dimension"
+              }
+            }
+          },
+          "box-shadow": {
+            "$value": "0px 4px 12px rgba(25,25,26,0.16)",
+            "$type": "string"
+          }
+        },
+        "lg": {
+          "desktop": {
+            "max-width": {
+              "$value": "840px",
+              "$type": "dimension"
+            },
+            "padding": {
+              "all": {
+                "$value": "40px",
+                "$type": "dimension"
+              }
+            }
+          }
+        },
+        "md": {
+          "desktop": {
+            "max-width": {
+              "$value": "624px",
+              "$type": "dimension"
+            },
+            "padding": {
+              "all": {
+                "$value": "32px",
+                "$type": "dimension"
+              }
+            }
+          }
+        },
+        "mobile": {
+          "height": {
+            "$value": "90%",
+            "$type": "dimension"
+          },
+          "padding": {
+            "all": {
+              "$value": "16px",
+              "$type": "dimension"
+            }
+          }
+        },
+        "sm": {
+          "desktop": {
+            "max-width": {
+              "$value": "408px",
+              "$type": "dimension"
+            },
+            "padding": {
+              "all": {
+                "$value": "24px",
+                "$type": "dimension"
+              }
+            }
+          }
+        },
+        "xl": {
+          "desktop": {
+            "max-width": {
+              "$value": "1056px",
+              "$type": "dimension"
+            },
+            "padding": {
+              "all": {
+                "$value": "48px",
+                "$type": "dimension"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

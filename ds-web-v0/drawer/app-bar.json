@@ -1,0 +1,20 @@
+{
+  "components": {
+    "drawer": {
+      "appbar": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.background.default}",
+              "$type": "color"
+            }
+          },
+          "box-shadow": {
+            "$value": "0px -4px 16px rgba(0,0,0,0.16)",
+            "$type": "string"
+          }
+        }
+      }
+    }
+  }
+}

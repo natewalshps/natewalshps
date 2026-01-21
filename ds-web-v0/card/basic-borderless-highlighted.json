@@ -1,0 +1,72 @@
+{
+  "components": {
+    "card": {
+      "basic-borderless-highlighted": {
+        "desktop": {
+          "background": {
+            "color": {
+              "$value": "{base.palette.secondary.darkblue}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "color": {
+              "$value": "{components.card.basic.base.desktop.border.color}",
+              "$type": "color"
+            },
+            "radius": {
+              "bottom-left": {
+                "$value": "{components.card.basic.base.desktop.border.radius.bottom-left}",
+                "$type": "dimension"
+              },
+              "bottom-right": {
+                "$value": "{components.card.basic.base.desktop.border.radius.bottom-right}",
+                "$type": "dimension"
+              },
+              "top-left": {
+                "$value": "{components.card.basic.base.desktop.border.radius.top-left}",
+                "$type": "dimension"
+              },
+              "top-right": {
+                "$value": "{components.card.basic.base.desktop.border.radius.top-right}",
+                "$type": "dimension"
+              }
+            },
+            "style": {
+              "$value": "{components.card.basic.base.desktop.border.style}",
+              "$type": "string"
+            },
+            "width": {
+              "$value": "{components.card.basic.base.desktop.border.width}",
+              "$type": "dimension"
+            }
+          },
+          "font": {
+            "color": {
+              "$value": "{components.card.basic.base.desktop.font.color}",
+              "$type": "color"
+            }
+          },
+          "padding": {
+            "bottom": {
+              "$value": "{components.card.basic.base.desktop.padding.bottom}",
+              "$type": "dimension"
+            },
+            "left": {
+              "$value": "{components.card.basic.base.desktop.padding.left}",
+              "$type": "dimension"
+            },
+            "right": {
+              "$value": "{components.card.basic.base.desktop.padding.right}",
+              "$type": "dimension"
+            },
+            "top": {
+              "$value": "{components.card.basic.base.desktop.padding.top}",
+              "$type": "dimension"
+            }
+          }
+        }
+      }
+    }
+  }
+}

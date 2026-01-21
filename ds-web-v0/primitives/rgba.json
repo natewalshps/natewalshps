@@ -1,0 +1,46 @@
+{
+  "base": {
+    "rgba": {
+      "lightGray": {
+        "$value": "rgba(25,25,26,0.04)",
+        "$type": "color"
+      },
+      "lightGray2": {
+        "$value": "rgba(0,0,0,0.2)",
+        "$type": "color"
+      },
+      "lightGray3": {
+        "$value": "rgba(0,0,0,0.14)",
+        "$type": "color"
+      },
+      "lightGray4": {
+        "$value": "rgba(0,0,0,0.12)",
+        "$type": "color"
+      },
+      "lightGray5": {
+        "$value": "rgba(0,0,0,0.25)",
+        "$type": "color"
+      },
+      "lightGray6": {
+        "$value": "rgba(51,51,51,0.3)",
+        "$type": "color"
+      },
+      "lightGray7": {
+        "$value": "rgba(25, 25, 26, 0.08)",
+        "$type": "color"
+      },
+      "mediumGray": {
+        "$value": "rgba(0,0,0,0.5)",
+        "$type": "color"
+      },
+      "mediumGray2": {
+        "$value": "rgba(89,89,89,0.56)",
+        "$type": "color"
+      },
+      "white": {
+        "$value": "rgba(255,255,255,1)",
+        "$type": "color"
+      }
+    }
+  }
+}
