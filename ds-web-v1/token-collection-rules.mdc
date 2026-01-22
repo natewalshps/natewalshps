@@ -1,0 +1,121 @@
+
+---
+description: >
+  Figma design tokens & variables — generate and map tokens (Primitive → Semantic → Mapped → Responsive) with
+  consistent naming, modes, accessibility, and validation. Use when editing token files or authoring Figma variable exports.
+globs:
+  - "tokens/**/*.{json,ts,tsx,js}"
+  - "design-system/**/*"
+  - "design/**/*"
+  - "**/*figma*"
+alwaysApply: false
+---
+
+# Figma Tokens & Variables — Authoring Rules (Cursor)
+
+**Intent.** Guide AI outputs so token collections for Figma follow a layered structure, stay brand-agnostic at the primitive layer,
+and meet accessibility + mode completeness requirements.
+
+@file ./README.md
+@file ./CONTRIBUTING.md
+
+---
+
+## 0) Names, structure, references (applies to all tokens)
+
+- **Naming pattern:** `category/role/state/scale` (lowercase, hyphen-free inside a segment; use `-` only within a segment if needed).
+- **No values or brand names in token names** (e.g., avoid `blue`, `16px`, `light` in names; keep those in primitives only).
+- **Reference direction:** higher-level tokens alias lower-level tokens only:
+  **Mapped → Semantic → Primitive**. No references to mapped tokens from semantics.
+- **Computed values:** Use math references (e.g., multiply a base spacing) instead of hardcoding if a calculation is intended.
+- **States:** If a token defines states (hover, pressed, focus, disabled), keep deltas consistent across the suite and document why.
+
+> Anti-patterns to flag: circular references, hardcoded hex in semantic/mapped layers, missing states, or names that encode usage like `button-…` in primitives.
+
+---
+
+## 1) Primitive tokens (brand-agnostic raw values)
+
+**Color**
+- Provide a neutral scale plus brand-agnostic scales as raw values.
+- Include **contrast pairs** (e.g., `100 ↔ 900`) to make on-color mapping predictable.
+
+**Spacing**
+- Use a consistent step (e.g., 4/8/12/16 or a modular scale). Do **not** encode usage or component names.
+
+**Radii**
+- Provide a geometric scale (e.g., `xs`, `sm`, `md`, `lg`, `full`) as primitives.
+
+**Opacity**
+- Offer a small, consistent series (e.g., 0–100 in sensible increments like 10/20/40/60/80).
+
+---
+
+## 2) Semantic tokens (meaningful roles)
+
+**States**
+- For each role, define: `default`, `hover`, `pressed`, `focus`, `disabled` with mathematically coherent deltas (e.g., consistent lightness/opacity adjustments).
+
+**Aliases**
+- **Always alias primitives** (no raw hex here). If you’re missing a primitive, add it rather than inlining values.
+
+**Modes (light/dark/brand)**
+- Keep identical naming structures across modes. **Every token must exist in every supported mode**.
+
+**Typography semantics**
+- Define composed roles (`text/display`, `text/heading`, `text/body`, `text/caption`) as **references** to primitive font size, weight, and line height primitives—no raw values.
+
+---
+
+## 3) Mapped tokens (component/application slots)
+
+- **Only mapped tokens** should be used inside components (UI slots), each mapping to **one semantic token**.
+- Typical slots: `surface/background`, `surface/raised`, `text/on-surface`, `text/on-primary`, `icon/on-surface`,
+  `border/subtle`, `border/strong`, `focus-ring`, `focus-outline`, `focus-border`.
+- **Density & sizing modes** (optional): `cozy`, `compact`, `spacious` mapped to responsive spacing primitives.
+
+**Accessibility**
+- All text & icon on-color mappings must meet **WCAG AA ≥ 4.5:1**; disabled affordances should maintain **≥ 3:1** minimum.
+
+---
+
+## 4) Responsive layer (breakpoints & scaling)
+
+- **Breakpoints:** `xs`, `sm`, `md`, `lg`, `xl`. Permit overrides of typography variables per breakpoint.
+- **Fluid type:** Prefer `clamp(...)` where supported; keep heading ratios ~**1.2** and body **1.5–1.7**.
+- **Responsive spacing:** Padding and layout spacing scale with type to maintain optical balance.
+
+---
+
+## 5) Ops: versioning & deprecation (highly recommended)
+
+- **Version** each token set (e.g., `v1`, `v1.1`) and follow SemVer‑like changes.
+- **Deprecation policy:** mark `deprecated: true`, provide `replacement: <token>`, and keep for a full release cycle before removal.
+
+---
+
+## 6) Validation rules Cursor should enforce or warn on
+
+- **Naming:** violates `category/role/state/scale`.
+- **Reference chain:** semantic/mapped referencing anything except lower layers.
+- **Mode completeness:** token missing in any declared mode.
+- **Accessibility:** on-color contrast < required ratio.
+- **Scale drift:** spacing/typography values not on the defined scale.
+
+---
+
+## 7) Snippets & examples (edit to match your repo)
+
+**Example — aliasing a semantic token to a primitive value**
+
+```json
+{
+  "color": {
+    "primitive": {
+      "neutral-900": { "value": "#0E0E0F" }
+    },
+    "semantic": {
+      "text/body/default": { "value": "{color.primitive.neutral-900}" }
+    }
+  }
+}
