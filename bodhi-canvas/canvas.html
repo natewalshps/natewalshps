@@ -1,0 +1,742 @@
+<title>Agent Graph Canvas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: app shell — top bar, left control drawer, pan/zoom SVG canvas, right inspector; drawer and inspector become sheets on phones */
+:root{
+  --bg:#eef1f5; --canvas:#f7f8fa; --grid:#e3e7ee; --surface:#ffffff; --surface-2:#f2f4f8;
+  --fg:#18202b; --muted:#5b6676; --line:#d7dce4; --line-strong:#b8c0cc;
+  --accent:#3550d6; --accent-soft:#e7ebfb; --accent-fg:#ffffff;
+  --warn:#b45309; --warn-soft:#fdf1dc; --ok:#15803d; --ok-soft:#e3f4e8;
+  --t-page:#3550d6; --t-component:#6a54c9; --t-function:#0f766e; --t-data:#a16207; --t-source:#6b6358;
+  --t-agent:#b4235f; --t-skill:#7c3aed; --t-tool:#0369a1; --t-human:#c2410c; --t-eval:#15803d;
+  --t-req:#475569; --t-story:#4338ca; --t-kpi:#9d174d; --t-metric:#0e7490; --t-test:#4d7c0f;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --shadow:0 1px 2px rgba(20,30,50,.06),0 4px 14px rgba(20,30,50,.06);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1117; --canvas:#11161e; --grid:#1b222c; --surface:#161c25; --surface-2:#1d2430;
+  --fg:#e6eaf0; --muted:#98a3b3; --line:#2a3340; --line-strong:#3b4656;
+  --accent:#8ea2ff; --accent-soft:#1f2848; --accent-fg:#0d1117;
+  --warn:#f2b65e; --warn-soft:#352812; --ok:#5fd08a; --ok-soft:#14301f;
+  --t-page:#8ea2ff; --t-component:#b3a2f5; --t-function:#4fd1c0; --t-data:#f2c25e; --t-source:#c2b8aa;
+  --t-agent:#f47fae; --t-skill:#c4a5ff; --t-tool:#6cc3f5; --t-human:#ff9a5c; --t-eval:#5fd08a;
+  --t-req:#aab6c8; --t-story:#a5a8ff; --t-kpi:#f58bb8; --t-metric:#5fd3e6; --t-test:#a8d65c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1117; --canvas:#11161e; --grid:#1b222c; --surface:#161c25; --surface-2:#1d2430;
+  --fg:#e6eaf0; --muted:#98a3b3; --line:#2a3340; --line-strong:#3b4656;
+  --accent:#8ea2ff; --accent-soft:#1f2848; --accent-fg:#0d1117;
+  --warn:#f2b65e; --warn-soft:#352812; --ok:#5fd08a; --ok-soft:#14301f;
+  --t-page:#8ea2ff; --t-component:#b3a2f5; --t-function:#4fd1c0; --t-data:#f2c25e; --t-source:#c2b8aa;
+  --t-agent:#f47fae; --t-skill:#c4a5ff; --t-tool:#6cc3f5; --t-human:#ff9a5c; --t-eval:#5fd08a;
+  --t-req:#aab6c8; --t-story:#a5a8ff; --t-kpi:#f58bb8; --t-metric:#5fd3e6; --t-test:#a8d65c;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:14px;line-height:1.45;margin:0;overflow:hidden}
+button,select,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--font-mono)}
+.app{height:100%;display:grid;grid-template-rows:auto 1fr}
+/* top bar */
+.top{display:flex;align-items:center;gap:14px;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));background:var(--surface);border-bottom:1px solid var(--line);min-width:0}
+.brand{display:flex;flex-direction:column;min-width:0}
+.brand b{font-size:15px;font-weight:600;white-space:nowrap}
+.brand span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lifecycle{display:flex;align-items:center;gap:4px;margin-left:12px}
+.ph{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.04em;padding:4px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.ph.done{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent);background:var(--ok-soft)}
+.ph.now{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.ph-sep{color:var(--line-strong)}
+.top .spacer{flex:1}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;font-size:13px;font-weight:500;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--line-strong)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.btn.warnbtn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent);background:var(--warn-soft)}
+.btn.okbtn{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 45%,transparent);background:var(--ok-soft)}
+.icon-btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;width:34px;height:34px;display:inline-grid;place-items:center;font-size:16px;line-height:1}
+#menuBtn{display:none}
+/* body */
+.body{display:grid;grid-template-columns:272px 1fr auto;min-height:0;position:relative}
+/* drawer */
+.drawer{background:var(--surface);border-right:1px solid var(--line);overflow-y:auto;display:flex;flex-direction:column;min-height:0}
+.dsec{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.dlabel{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+.views{display:flex;flex-direction:column;gap:2px}
+.view{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:8px;text-align:left;border:0;background:transparent;border-radius:8px;padding:8px 8px}
+.view:hover{background:var(--surface-2)}
+.view.on{background:var(--accent-soft);color:var(--accent)}
+.view .vi{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-family:var(--font-mono);font-size:11px;font-weight:500;border:1px solid currentColor}
+.view .vt b{display:block;font-weight:600;font-size:13.5px}
+.view .vt span{display:block;font-size:12px;color:var(--muted)}
+.view .count{font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+.legend{display:flex;flex-direction:column;gap:2px}
+.lg{display:grid;grid-template-columns:auto 12px 1fr auto;align-items:center;gap:8px;font-size:13px;padding:4px 2px;cursor:pointer}
+.lg input{margin:0;accent-color:var(--accent)}
+.sw{width:12px;height:12px;border-radius:3px;border:2px solid}
+.lg .n{font-family:var(--font-mono);font-size:11px;color:var(--muted)}
+.kb-phase{display:flex;flex-direction:column;gap:2px}
+.kb-phase h4{margin:6px 0 2px;font-size:12px;font-weight:600;color:var(--fg);display:flex;gap:6px;align-items:center}
+.kb-item{display:grid;grid-template-columns:10px 1fr auto;gap:8px;align-items:center;text-align:left;border:0;background:transparent;padding:5px 6px;border-radius:6px;font-size:12.5px;color:var(--fg)}
+.kb-item:hover{background:var(--surface-2)}
+.kb-item.on{background:var(--accent-soft)}
+.kb-item i{width:8px;height:8px;border-radius:50%}
+.kb-item .meta{font-family:var(--font-mono);font-size:10.5px;color:var(--muted)}
+.kb-item .meta.good{color:var(--ok)}
+.kb-item .meta.bad{color:var(--warn)}
+.pattern{border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;text-align:left;background:var(--surface)}
+.pattern:hover{border-color:var(--line-strong)}
+.pattern b{font-size:13px;font-weight:600;display:flex;justify-content:space-between;gap:6px}
+.pattern span{font-size:12px;color:var(--muted)}
+.pill{font-family:var(--font-mono);font-size:10.5px;padding:1px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);font-weight:400;white-space:nowrap}
+.pill.use{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent);background:var(--ok-soft)}
+/* canvas */
+.stage{position:relative;min-width:0;min-height:0;background:var(--canvas);overflow:hidden}
+#svg{width:100%;height:100%;display:block;touch-action:none;cursor:grab;user-select:none}
+#svg.panning{cursor:grabbing}
+.viewhead{position:absolute;left:16px;top:14px;display:flex;flex-direction:column;gap:2px;pointer-events:none}
+.viewhead b{font-size:18px;font-weight:600}
+.viewhead span{font-size:12.5px;color:var(--muted);max-width:56ch}
+.zoom{position:absolute;right:14px;top:14px;display:flex;gap:6px}
+.tip{position:absolute;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:420px;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);padding:12px 14px 12px 14px;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:start}
+.tip .src{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.tip p{margin:2px 0 0;font-size:13px}
+.tip .bulb{width:24px;height:24px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-family:var(--font-mono);font-size:12px;font-weight:500}
+.tip button{border:0;background:transparent;color:var(--muted);font-size:16px;line-height:1;padding:0 2px}
+.colhead{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;fill:var(--muted)}
+/* svg nodes */
+.node{cursor:pointer}
+.node rect.box{fill:var(--surface);stroke:var(--line-strong);stroke-width:1}
+.node rect.chip{stroke:none}
+.node text.t{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase}
+.node text.l{font-family:var(--font-body);font-size:12.5px;font-weight:500;fill:var(--fg)}
+.node:hover rect.box{stroke:var(--fg)}
+.node.sel rect.box{stroke:var(--accent);stroke-width:2}
+.node.dim,.edge.dim{opacity:.18}
+.edge path.line{fill:none;stroke:var(--line-strong);stroke-width:1.5}
+.edge path.hit{fill:none;stroke:transparent;stroke-width:16;cursor:pointer}
+.edge:hover path.line{stroke:var(--fg)}
+.edge.sel path.line{stroke:var(--accent);stroke-width:2.5}
+.edge.risk path.line{stroke:var(--warn);stroke-dasharray:5 4}
+.edge.guarded path.line{stroke:var(--ok)}
+.edge .lbl{font-family:var(--font-mono);font-size:9.5px;fill:var(--muted)}
+.badge rect{stroke-width:1}
+.badge text{font-family:var(--font-mono);font-size:9.5px;font-weight:500}
+.plus circle{fill:var(--surface);stroke:var(--line-strong)}
+.plus text{fill:var(--muted);font-size:12px;font-family:var(--font-mono)}
+.edge:hover .plus circle{stroke:var(--accent)}
+.edge:hover .plus text{fill:var(--accent)}
+/* inspector */
+.inspector{width:360px;background:var(--surface);border-left:1px solid var(--line);overflow-y:auto;display:flex;flex-direction:column;min-height:0}
+.inspector[hidden]{display:none!important}
+.ihead{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:6px;position:sticky;top:0;background:var(--surface);z-index:2}
+.ihead .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ihead h2{margin:0;font-size:16px;font-weight:600;text-wrap:balance}
+.ihead p{margin:0;color:var(--muted);font-size:13px}
+.typechip{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid currentColor;display:inline-flex;align-self:flex-start}
+.isec{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.isec h3{margin:0;font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.isec h3 .hint{font-weight:400;color:var(--muted);font-size:12px}
+.isec .help{font-size:12.5px;color:var(--muted);margin:0}
+.callout{border-radius:8px;padding:10px 12px;font-size:13px;display:flex;gap:8px}
+.callout.warn{background:var(--warn-soft);color:var(--fg);border:1px solid color-mix(in srgb,var(--warn) 40%,transparent)}
+.callout.warn b{color:var(--warn)}
+.callout.ok{background:var(--ok-soft);border:1px solid color-mix(in srgb,var(--ok) 40%,transparent)}
+.callout.ok b{color:var(--ok)}
+.card{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;background:var(--surface-2)}
+.card .ct{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:13px;font-weight:600}
+.card .cd{font-size:12.5px;color:var(--muted)}
+.card .x{border:0;background:transparent;color:var(--muted);font-size:15px;line-height:1;padding:0 2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:3px 6px 3px 9px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2)}
+.chip .x{border:0;background:transparent;color:var(--muted);padding:0 3px;font-size:13px;line-height:1}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:8px;border:1px dashed var(--line-strong);border-radius:8px;padding:10px}
+.form label{display:flex;flex-direction:column;gap:3px;font-size:11.5px;color:var(--muted);min-width:0}
+.form .full{grid-column:1/-1}
+.form select,.form input,.form textarea,.addrow select{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:6px 8px;font-size:13px;width:100%;min-width:0}
+.form textarea{resize:vertical;min-height:52px}
+.addrow{display:flex;gap:6px}
+.addrow select{flex:1}
+.under{font-size:12px}
+.under summary{cursor:pointer;color:var(--muted)}
+pre.code{margin:8px 0 0;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:10px;font-family:var(--font-mono);font-size:11.5px;line-height:1.5;overflow-x:auto;white-space:pre}
+.conn{display:flex;flex-direction:column;gap:2px}
+.conn button{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center;text-align:left;border:0;background:transparent;padding:5px 6px;border-radius:6px;font-size:12.5px}
+.conn button:hover{background:var(--surface-2)}
+.conn .k{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);min-width:84px}
+.checks{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.checks li{display:grid;grid-template-columns:18px 1fr;gap:6px;font-size:13px}
+.checks .y{color:var(--ok);font-family:var(--font-mono)}
+.checks .n{color:var(--warn);font-family:var(--font-mono)}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:6px 10px;font-size:13px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.score{font-family:var(--font-mono);font-size:22px;font-weight:500}
+/* export modal */
+.overlay{position:fixed;inset:0;background:rgba(10,14,20,.45);display:grid;place-items:center;z-index:50;padding:16px}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);width:min(860px,100%);max-height:min(86vh,760px);display:flex;flex-direction:column;min-height:0}
+.mhead{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.mhead h2{margin:0;font-size:16px}
+.mhead p{margin:2px 0 0;color:var(--muted);font-size:12.5px}
+.tabs{display:flex;gap:4px;padding:10px 16px 0;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:var(--surface);border-radius:8px 8px 0 0;padding:6px 12px;font-size:12.5px;border-bottom:0}
+.tab.on{background:var(--surface-2);color:var(--accent);font-weight:600}
+.mbody{flex:1;min-height:0;overflow:auto;border-top:1px solid var(--line);background:var(--surface-2)}
+.mbody pre{margin:0;padding:14px 16px;font-family:var(--font-mono);font-size:12px;line-height:1.55;white-space:pre}
+.mfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:8px;font-size:13px;z-index:60}
+.scrim{display:none}
+@media (max-width:1100px){
+  .lifecycle{display:none}
+  .inspector{width:320px}
+}
+@media (max-width:820px){
+  #menuBtn{display:inline-grid}
+  .body{grid-template-columns:1fr}
+  .drawer{position:absolute;inset:0 auto 0 0;width:min(300px,86vw);z-index:20;box-shadow:var(--shadow);transform:translateX(-102%);transition:transform .2s ease;padding-left:env(safe-area-inset-left,0px)}
+  .drawer.open{transform:none}
+  .scrim.open{display:block;position:absolute;inset:0;background:rgba(10,14,20,.35);z-index:15}
+  .inspector{position:absolute;left:0;right:0;bottom:0;width:auto;max-height:62%;z-index:18;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;box-shadow:var(--shadow);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .tip{right:16px;max-width:none}
+  .viewhead span{display:none}
+  .brand span{display:none}
+  #guardBtn .lbl,#exportBtn .lbl{display:none}
+}
+@media (prefers-reduced-motion:reduce){.drawer{transition:none}}
+</style>
+
+<div class="app">
+  <header class="top">
+    <button class="icon-btn" id="menuBtn" aria-label="Open canvas controls">≡</button>
+    <div class="brand">
+      <b>Agent Graph Canvas</b>
+      <span>Plan Change Assistant · sample project</span>
+    </div>
+    <div class="lifecycle" aria-label="AI-DLC phase">
+      <span class="ph done">Inception</span><span class="ph-sep">—</span>
+      <span class="ph now">Construction · Bolt 3</span><span class="ph-sep">—</span>
+      <span class="ph">Operations</span>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn warnbtn" id="guardBtn" title="Show the next connection that needs a guard"><span id="guardCount">0</span><span class="lbl">&nbsp;need a guard</span></button>
+    <button class="btn primary" id="exportBtn">⇪<span class="lbl">Export graph</span></button>
+  </header>
+
+  <div class="body">
+    <aside class="drawer" id="drawer" aria-label="Canvas controls">
+      <div class="dsec">
+        <div class="dlabel">Views</div>
+        <div class="views" id="views"></div>
+      </div>
+      <div class="dsec">
+        <div class="dlabel">On this canvas <span>show</span></div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="dsec" id="patternSec">
+        <div class="dlabel">Pattern palette</div>
+        <div id="patterns" style="display:flex;flex-direction:column;gap:6px"></div>
+      </div>
+      <div class="dsec">
+        <div class="dlabel">Knowledge base <span>AI-DLC</span></div>
+        <div id="kb"></div>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="stage" id="stage">
+      <svg id="svg" aria-label="Project graph canvas">
+        <defs>
+          <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="var(--grid)"/></pattern>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--line-strong)"/></marker>
+          <marker id="arrSel" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+        </defs>
+        <rect id="bg" x="-5000" y="-5000" width="10000" height="10000" fill="url(#grid)"/>
+        <g id="world"></g>
+      </svg>
+      <div class="viewhead"><b id="vTitle"></b><span id="vSub"></span></div>
+      <div class="zoom">
+        <button class="icon-btn" id="zIn" aria-label="Zoom in">+</button>
+        <button class="icon-btn" id="zOut" aria-label="Zoom out">−</button>
+        <button class="icon-btn" id="zFit" aria-label="Fit to screen">⤢</button>
+      </div>
+      <div class="tip" id="tip">
+        <span class="bulb">i</span>
+        <div><div class="src" id="tipSrc"></div><p id="tipText"></p></div>
+        <button id="tipClose" aria-label="Hide guidance">×</button>
+      </div>
+    </main>
+
+    <aside class="inspector" id="inspector" hidden aria-label="Inspector"></aside>
+  </div>
+</div>
+
+<div class="overlay" id="exportModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="exTitle">
+    <div class="mhead">
+      <div><h2 id="exTitle">Export the project graph</h2><p>Open formats any agent stack can read. These are generated live from the canvas.</p></div>
+      <button class="icon-btn" id="exClose" aria-label="Close">×</button>
+    </div>
+    <div class="tabs" id="exTabs"></div>
+    <div class="mbody"><pre id="exBody"></pre></div>
+    <div class="mfoot"><span id="exNote"></span><button class="btn" id="exCopy">Copy</button></div>
+  </div>
+</div>
+
+<script>
+(function(){
+/* ---------- schema ---------- */
+const TYPES={
+  page:{name:'Page',c:'--t-page'}, component:{name:'UI component',c:'--t-component'}, function:{name:'Function',c:'--t-function'},
+  data:{name:'Data entity',c:'--t-data'}, source:{name:'Data source',c:'--t-source'},
+  agent:{name:'Agent',c:'--t-agent'}, skill:{name:'Skill',c:'--t-skill'}, tool:{name:'Tool · MCP',c:'--t-tool'},
+  human:{name:'Human checkpoint',c:'--t-human'}, eval:{name:'Eval',c:'--t-eval'},
+  req:{name:'Requirement',c:'--t-req'}, story:{name:'User story',c:'--t-story'}, kpi:{name:'KPI',c:'--t-kpi'},
+  metric:{name:'Metric',c:'--t-metric'}, test:{name:'Test',c:'--t-test'}
+};
+const PHASE={req:'Inception',story:'Inception',kpi:'Inception',metric:'Operations',eval:'Operations'};
+const phaseOf=t=>PHASE[t]||'Construction';
+
+const NODES=[
+ // UI
+ {id:'pg_request',type:'page',label:'Plan change request',desc:'Where a client benefits admin starts a plan or formulary change.'},
+ {id:'pg_impact',type:'page',label:'Impact review',desc:'Shows projected member and cost impact before anything is approved.'},
+ {id:'pg_queue',type:'page',label:'Approval queue',desc:'Account managers and pharmacists review pending changes.'},
+ {id:'c_form',type:'component',label:'Change request form',desc:'Structured fields: plan, effective date, change type, rationale.'},
+ {id:'c_drug',type:'component',label:'Drug search',desc:'Type-ahead over the current formulary.'},
+ {id:'c_assist',type:'component',label:'Assistant panel',desc:'Conversational entry point. Clients describe the change in plain words.'},
+ {id:'c_summary',type:'component',label:'Impact summary card',desc:'Members affected, projected cost change, and confidence.'},
+ {id:'c_table',type:'component',label:'Member impact table',desc:'De-identified counts by tier and therapy class.'},
+ {id:'c_diff',type:'component',label:'Plan diff viewer',desc:'Side-by-side view of current and proposed plan rules.'},
+ {id:'c_banner',type:'component',label:'Approval banner',desc:'Shows compliance status and the approve / send back actions.'},
+ {id:'f_submit',type:'function',label:'Submit change request',desc:'Validates and records the request.'},
+ {id:'f_analyze',type:'function',label:'Analyze formulary change',desc:'Finds affected drugs, tiers and alternatives.'},
+ {id:'f_simulate',type:'function',label:'Simulate member & cost impact',desc:'Projects impact from 90 days of claims.'},
+ {id:'f_compliance',type:'function',label:'Check compliance',desc:'Checks the change against benefit policy and notice rules.'},
+ {id:'f_approve',type:'function',label:'Approve & publish',desc:'Writes the approved change to the plan system of record.'},
+ // Data
+ {id:'d_request',type:'data',label:'Change request',desc:'The request record and its status history.'},
+ {id:'d_formulary',type:'data',label:'Formulary',desc:'Drugs, tiers, prior-auth and step-therapy rules.'},
+ {id:'d_claims',type:'data',label:'Claims history · 90 days',desc:'Paid pharmacy claims used for impact simulation.',sens:'PHI'},
+ {id:'d_members',type:'data',label:'Member eligibility',desc:'Who is covered under which plan.',sens:'PHI'},
+ {id:'d_plan',type:'data',label:'Plan configuration',desc:'System of record for plan rules.',sens:'System of record'},
+ {id:'d_audit',type:'data',label:'Audit log',desc:'Immutable record of who changed what and why.'},
+ {id:'s_claims',type:'source',label:'Claims warehouse',desc:'Exposed to agents through an MCP server.'},
+ {id:'s_form',type:'source',label:'Formulary service',desc:'REST API, read-only.'},
+ {id:'s_admin',type:'source',label:'Plan admin system',desc:'Core platform. Writes need approval.'},
+ // Orchestration
+ {id:'a_lead',type:'agent',label:'Plan Change Orchestrator',role:'Lead agent',desc:'Plans the work, delegates to specialists and puts together the recommendation.',
+   brief:{objective:'Turn a client request into an approved, compliant plan change.',output:'Recommendation with impact, compliance result and plan diff.',tools:'plan-admin.write (gated), task list',bounds:'Never publishes without account manager approval.'}},
+ {id:'a_form',type:'agent',label:'Formulary Analyst',role:'Subagent',desc:'Finds affected drugs and therapeutic alternatives.',
+   brief:{objective:'List every drug and tier the change touches.',output:'JSON: drugs[], tiers[], alternatives[]',tools:'formulary-api.lookup',bounds:'Read-only. No cost estimates.'}},
+ {id:'a_impact',type:'agent',label:'Impact Simulator',role:'Subagent',desc:'Projects member disruption and cost.',
+   brief:{objective:'Estimate members affected and cost change.',output:'Counts by tier, $ PMPM change, confidence',tools:'claims-mcp.query',bounds:'Aggregates only. Never returns member-level rows.'}},
+ {id:'a_comp',type:'agent',label:'Compliance Reviewer',role:'Subagent',desc:'Checks the change against policy and notice rules.',
+   brief:{objective:'Flag policy and notice violations.',output:'Pass / fail with cited rule',tools:'benefit-policy-check skill',bounds:'Cannot approve. Only flags.'}},
+ {id:'k_rules',type:'skill',label:'formulary-rules',desc:'How to read tiers, prior auth and step therapy. Includes canonical examples.'},
+ {id:'k_cost',type:'skill',label:'cost-impact-model',desc:'The PMPM calculation method and its assumptions.'},
+ {id:'k_policy',type:'skill',label:'benefit-policy-check',desc:'Policy rules and member-notice timing requirements.'},
+ {id:'t_form',type:'tool',label:'formulary-api.lookup',desc:'Read drugs and tiers.'},
+ {id:'t_claims',type:'tool',label:'claims-mcp.query',desc:'Aggregate claims queries.'},
+ {id:'t_plan',type:'tool',label:'plan-admin.write',desc:'Writes plan rules. Highest-risk action in the flow.'},
+ {id:'h_am',type:'human',label:'Account manager',desc:'Approves every publish.'},
+ {id:'h_rph',type:'human',label:'Clinical pharmacist',desc:'Reviews changes with clinical risk.'},
+ {id:'e_acc',type:'eval',label:'Impact accuracy',desc:'Simulated vs actuarial baseline on 40 historical changes.',grader:'Code + model rubric',suite:'Capability',metric:'pass^3',score:0.82,tasks:40},
+ {id:'e_comp',type:'eval',label:'Compliance regression',desc:'Known violations must always be caught.',grader:'Code',suite:'Regression',metric:'pass^5',score:1,tasks:26},
+ {id:'e_brief',type:'eval',label:'Delegation quality',desc:'Are subagent briefs complete and non-overlapping?',grader:'Model rubric',suite:'Capability',metric:'pass@1',score:0.74,tasks:20},
+ // Requirements
+ {id:'r1',type:'req',label:'Clients request changes self-service',desc:'Benefits admins can start and track a plan change without calling their account team.'},
+ {id:'r2',type:'req',label:'Impact shown before approval',desc:'Every change shows member and cost impact before anyone approves it.'},
+ {id:'r3',type:'req',label:'No publish without a person',desc:'No plan change reaches the system of record without human approval.'},
+ {id:'us1',type:'story',label:'Admin submits an exclusion',desc:'As a benefits admin, I want to request a formulary exclusion in plain language so that I don’t need to fill in forms I don’t understand.'},
+ {id:'us2',type:'story',label:'AM reviews impact',desc:'As an account manager, I want to see projected impact and the plan diff so that I can approve with confidence.'},
+ {id:'us3',type:'story',label:'Pharmacist flags clinical risk',desc:'As a clinical pharmacist, I want high-risk changes routed to me so that members aren’t disrupted.'},
+ {id:'kpi_cycle',type:'kpi',label:'Request to publish < 2 days',desc:'Today: 9 business days.'},
+ {id:'kpi_err',type:'kpi',label:'Post-publish corrections < 1%',desc:'Today: 4.2%.'},
+ {id:'kpi_self',type:'kpi',label:'60% self-service',desc:'Today: 15% of changes start in the portal.'},
+ {id:'m_cycle',type:'metric',label:'Median cycle time',desc:'Current: 3.1 days (pilot).'},
+ {id:'m_corr',type:'metric',label:'Correction rate',desc:'Current: 1.8% (pilot).'},
+ {id:'m_self',type:'metric',label:'Self-service share',desc:'Current: 41% (pilot).'},
+ {id:'tst1',type:'test',label:'Impact within ±5% of baseline',desc:'Verified by the Impact accuracy eval.'},
+ {id:'tst2',type:'test',label:'Publish blocked without approval',desc:'Verified by the Compliance regression suite.'},
+];
+const byId=Object.fromEntries(NODES.map(n=>[n.id,n]));
+
+let eid=0;
+const E=(from,to,kind,o={})=>({id:'e'+(++eid),from,to,kind,risk:o.risk||null,hooks:o.hooks||[],skills:o.skills||[],evals:o.evals||[],checkpoint:o.checkpoint||null});
+const EDGES=[
+ // UI
+ E('pg_request','c_form','contains'),E('pg_request','c_drug','contains'),E('pg_request','c_assist','contains'),
+ E('pg_impact','c_summary','contains'),E('pg_impact','c_table','contains'),
+ E('pg_queue','c_diff','contains'),E('pg_queue','c_banner','contains'),
+ E('c_form','f_submit','triggers'),E('c_assist','f_submit','triggers',{skills:['k_rules']}),E('c_drug','f_analyze','triggers'),
+ E('f_simulate','c_summary','shows'),E('f_simulate','c_table','shows'),E('f_analyze','c_diff','shows'),
+ E('f_compliance','c_banner','shows'),E('c_banner','f_approve','triggers',{checkpoint:'h_am'}),
+ // Data
+ E('f_submit','d_request','writes'),E('f_analyze','d_formulary','reads'),
+ E('f_simulate','d_claims','reads',{risk:'Reads PHI',hooks:[{when:'after',check:'script',action:'redact',note:'Strip member identifiers from results before they reach the model.'}]}),
+ E('f_simulate','d_members','reads',{risk:'Reads PHI'}),
+ E('f_approve','d_plan','writes',{risk:'Writes to system of record',checkpoint:'h_am'}),
+ E('f_approve','d_audit','writes'),
+ E('s_claims','d_claims','provides'),E('s_form','d_formulary','provides'),E('s_admin','d_plan','provides'),E('s_admin','d_members','provides'),
+ E('d_formulary','c_drug','populates'),E('d_plan','c_diff','populates'),E('d_members','c_table','populates',{risk:'PHI shown in UI'}),
+ // Orchestration
+ E('f_analyze','a_lead','routed to'),E('f_simulate','a_lead','routed to'),E('f_compliance','a_lead','routed to'),E('f_approve','a_lead','routed to'),
+ E('a_lead','a_form','delegates to'),
+ E('a_lead','a_impact','delegates to',{hooks:[{when:'handoff',check:'llm',action:'block',note:'Reject the handoff if the brief has no output format or boundaries.'}],evals:['e_brief']}),
+ E('a_lead','a_comp','delegates to'),
+ E('a_form','k_rules','uses skill'),E('a_impact','k_cost','uses skill'),E('a_comp','k_policy','uses skill'),
+ E('a_form','t_form','calls'),
+ E('a_impact','t_claims','calls',{risk:'Reads PHI',hooks:[{when:'after',check:'script',action:'redact',note:'Drop any row-level member data from the tool result.'}]}),
+ E('a_lead','t_plan','calls',{risk:'Writes to system of record',checkpoint:'h_am',hooks:[{when:'before',check:'human',action:'block',note:'Hold the write until the account manager approves the diff.'}]}),
+ E('a_comp','h_rph','escalates to'),E('a_lead','h_am','asks approval'),
+ E('a_impact','e_acc','evaluated by'),E('a_comp','e_comp','evaluated by'),
+ // Requirements
+ E('r1','us1','refines'),E('r2','us2','refines'),E('r3','us2','refines'),E('r3','us3','refines'),
+ E('us1','f_submit','implemented by'),E('us2','f_simulate','implemented by'),E('us2','f_approve','implemented by'),E('us3','f_compliance','implemented by'),
+ E('f_submit','m_self','measured by'),E('f_approve','m_cycle','measured by'),E('f_approve','m_corr','measured by'),
+ E('f_simulate','tst1','verified by'),E('f_approve','tst2','verified by'),
+ E('m_cycle','kpi_cycle','rolls up to'),E('m_corr','kpi_err','rolls up to'),E('m_self','kpi_self','rolls up to'),
+ E('tst1','e_acc','automated by'),E('tst2','e_comp','automated by'),
+];
+
+const VIEWS=[
+ {id:'ui',key:'U',name:'UI',sub:'Pages, components and the functions they trigger',
+  cols:[['Pages',['pg_request','pg_impact','pg_queue']],['Components',['c_form','c_drug','c_assist','c_summary','c_table','c_diff','c_banner']],['Functions',['f_submit','f_analyze','f_simulate','f_compliance','f_approve']]]},
+ {id:'data',key:'D',name:'Data',sub:'What each function reads and writes, and where data surfaces in the UI',
+  cols:[['UI',['c_drug','c_table','c_diff']],['Functions',['f_submit','f_analyze','f_simulate','f_approve']],['Data',['d_request','d_formulary','d_claims','d_members','d_plan','d_audit']],['Sources',['s_claims','s_form','s_admin']]]},
+ {id:'orch',key:'O',name:'Orchestration',sub:'Agents, skills, tools, human checkpoints and evals',
+  cols:[['Functions',['f_analyze','f_simulate','f_compliance','f_approve']],['Lead',['h_am','a_lead','t_plan']],['Subagents',['a_form','a_impact','a_comp']],['Skills & tools',['k_rules','t_form','k_cost','t_claims','k_policy']],['People & evals',['e_brief','e_acc','e_comp','h_rph']]]},
+ {id:'req',key:'R',name:'Requirements',sub:'Requirements to stories to functions, measured by metrics and tests',
+  cols:[['Requirements',['r1','r2','r3']],['User stories',['us1','us2','us3']],['Functions',['f_submit','f_simulate','f_compliance','f_approve']],['Metrics & tests',['m_self','m_cycle','m_corr','tst1','tst2']],['KPIs & evals',['kpi_self','kpi_cycle','kpi_err','e_acc','e_comp']]]},
+];
+
+const PATTERNS=[
+ {name:'Prompt chain',use:false,src:'Building effective agents',desc:'Fixed steps with a check (gate) between each one. Best when the task splits cleanly into known steps.'},
+ {name:'Routing',use:true,src:'Building effective agents',desc:'Classify the input and send it to a specialist. Here each function routes to the lead agent.'},
+ {name:'Parallelization',use:true,src:'Building effective agents',desc:'Independent subtasks run at once. Formulary analysis and impact simulation run in parallel.'},
+ {name:'Orchestrator-workers',use:true,src:'Multi-agent research system',desc:'A lead plans and delegates to subagents with clear briefs, then puts the results together.'},
+ {name:'Evaluator-optimizer',use:false,src:'Building effective agents',desc:'One model drafts and another critiques in a loop. Add it only if evals show the first draft falls short.'},
+ {name:'Human checkpoint',use:true,src:'Agent teams · Hooks',desc:'Pause for a person before high-risk actions. Here an account manager approves every publish.'},
+];
+
+const WHEN={before:{l:'Before this action',ev:'PreToolUse'},after:{l:'After this action',ev:'PostToolUse'},handoff:{l:'When work is handed off',ev:'SubagentStart'},done:{l:'When a task is marked done',ev:'TaskCompleted'},finish:{l:'When the agent finishes',ev:'Stop'},start:{l:'When a session starts',ev:'SessionStart'}};
+const CHECK={script:{l:'Rule or script',h:'command'},llm:{l:'AI judge',h:'prompt'},agent:{l:'Investigating agent',h:'agent'},http:{l:'External service',h:'http'},human:{l:'Human approval',h:'command'}};
+const ACTION={block:'Block until it passes',redact:'Clean up the result',log:'Log to audit trail',context:'Add context for the agent',ask:'Ask a person'};
+
+/* ---------- state ---------- */
+const S={view:'ui',sel:null,hidden:{},pos:{},xf:{},kbSel:null,tipOff:false};
+VIEWS.forEach(v=>{
+  const p={};const W=300;const H=78;const max=Math.max(...v.cols.map(c=>c[1].length));
+  v.cols.forEach(([,ids],ci)=>{const off=(max-ids.length)*H/2;ids.forEach((id,ri)=>{p[id]={x:ci*W,y:off+ri*H}})});
+  S.pos[v.id]=p;
+});
+const NW=196,NH=50;
+const $=id=>document.getElementById(id);
+const svg=$('svg'),world=$('world');
+const NS='http://www.w3.org/2000/svg';
+const el=(tag,attrs={},parent)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e};
+const cssv=name=>getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const view=()=>VIEWS.find(v=>v.id===S.view);
+const inView=id=>{const v=view();return v.cols.some(c=>c[1].includes(id))&&!S.hidden[byId[id].type]};
+const guarded=e=>e.hooks.length>0||!!e.checkpoint;
+const needsGuard=e=>!!e.risk&&!guarded(e);
+
+/* ---------- lineage ---------- */
+function lineage(ids){
+  const set=new Set(ids);
+  const walk=(dir)=>{const q=[...ids];const seen=new Set(ids);while(q.length){const c=q.shift();EDGES.forEach(e=>{const a=dir?e.from:e.to,b=dir?e.to:e.from;if(a===c&&!seen.has(b)){seen.add(b);set.add(b);q.push(b)}})}};
+  walk(true);walk(false);return set;
+}
+
+/* ---------- render canvas ---------- */
+function render(){
+  world.innerHTML='';
+  const v=view();const P=S.pos[v.id];
+  let lit=null;
+  if(S.sel&&S.sel.kind==='node')lit=lineage([S.sel.id]);
+  if(S.sel&&S.sel.kind==='edge'){const e=EDGES.find(x=>x.id===S.sel.id);lit=new Set([e.from,e.to])}
+  // column headers
+  v.cols.forEach(([name,ids],ci)=>{const ys=ids.map(id=>P[id].y);const t=el('text',{x:ci*300,y:Math.min(...ys)-14,class:'colhead'},world);t.textContent=name});
+  const gE=el('g',{},world),gN=el('g',{},world);
+  EDGES.forEach(e=>{
+    if(!inView(e.from)||!inView(e.to))return;
+    const a=P[e.from],b=P[e.to];
+    let x1,y1,x2,y2,d;
+    if(b.x>a.x+NW/2){x1=a.x+NW;y1=a.y+NH/2;x2=b.x;y2=b.y+NH/2;const dx=Math.max(40,(x2-x1)/2);d=`M${x1},${y1} C${x1+dx},${y1} ${x2-dx},${y2} ${x2},${y2}`;var c1=[x1+dx,y1],c2=[x2-dx,y2]}
+    else if(b.x<a.x-NW/2){x1=a.x;y1=a.y+NH/2;x2=b.x+NW;y2=b.y+NH/2;const dx=Math.max(40,(x1-x2)/2);d=`M${x1},${y1} C${x1-dx},${y1} ${x2+dx},${y2} ${x2},${y2}`;c1=[x1-dx,y1];c2=[x2+dx,y2]}
+    else{x1=a.x+NW;y1=a.y+NH/2;x2=b.x+NW;y2=b.y+NH/2;d=`M${x1},${y1} C${x1+60},${y1} ${x2+60},${y2} ${x2},${y2}`;c1=[x1+60,y1];c2=[x2+60,y2]}
+    const mx=(x1+3*c1[0]+3*c2[0]+x2)/8,my=(y1+3*c1[1]+3*c2[1]+y2)/8;
+    const sel=S.sel&&S.sel.kind==='edge'&&S.sel.id===e.id;
+    const cls=['edge'];if(sel)cls.push('sel');if(needsGuard(e))cls.push('risk');else if(e.risk&&guarded(e))cls.push('guarded');
+    if(lit&&!(lit.has(e.from)&&lit.has(e.to)))cls.push('dim');
+    const g=el('g',{class:cls.join(' '),'data-edge':e.id,tabindex:0,role:'button','aria-label':`${byId[e.from].label} ${e.kind} ${byId[e.to].label}`},gE);
+    el('path',{d,class:'line','marker-end':sel?'url(#arrSel)':'url(#arr)'},g);
+    el('path',{d,class:'hit'},g);
+    // badges
+    const badges=[];
+    if(needsGuard(e))badges.push({t:'! '+e.risk,c:'--warn',bg:'--warn-soft'});
+    if(e.hooks.length)badges.push({t:'Hook '+e.hooks.length,c:'--accent',bg:'--accent-soft'});
+    if(e.checkpoint)badges.push({t:'Human',c:'--t-human',bg:'--surface'});
+    if(e.skills.length)badges.push({t:'Skill '+e.skills.length,c:'--t-skill',bg:'--surface'});
+    if(e.evals.length)badges.push({t:'Eval '+e.evals.length,c:'--t-eval',bg:'--surface'});
+    if(badges.length){
+      const widths=badges.map(b=>b.t.length*6+12);const tot=widths.reduce((s,w)=>s+w,0)+(badges.length-1)*4;
+      let bx=mx-tot/2;
+      badges.forEach((b,i)=>{const bg=el('g',{class:'badge'},g);el('rect',{x:bx,y:my-9,width:widths[i],height:18,rx:9,fill:`var(${b.bg})`,stroke:`var(${b.c})`},bg);const t=el('text',{x:bx+widths[i]/2,y:my+3.5,'text-anchor':'middle',fill:`var(${b.c})`},bg);t.textContent=b.t;bx+=widths[i]+4});
+    }else{
+      const pg=el('g',{class:'plus'},g);el('circle',{cx:mx,cy:my,r:8},pg);const t=el('text',{x:mx,y:my+4,'text-anchor':'middle'},pg);t.textContent='+';
+    }
+    if(sel){const t=el('text',{x:mx,y:my-14,'text-anchor':'middle',class:'lbl'},g);t.textContent=e.kind}
+  });
+  v.cols.forEach(([,ids])=>ids.forEach(id=>{
+    if(!inView(id))return;const n=byId[id];const p=P[id];
+    const cls=['node'];if(S.sel&&S.sel.kind==='node'&&S.sel.id===id)cls.push('sel');
+    if(S.kbSel===id)cls.push('sel');
+    if(lit&&!lit.has(id))cls.push('dim');
+    const g=el('g',{class:cls.join(' '),transform:`translate(${p.x},${p.y})`,'data-node':id,tabindex:0,role:'button','aria-label':`${TYPES[n.type].name}: ${n.label}`},gN);
+    el('rect',{class:'box',width:NW,height:NH,rx:8},g);
+    el('rect',{class:'chip',x:10,y:10,width:8,height:8,rx:2,fill:`var(${TYPES[n.type].c})`},g);
+    const t=el('text',{class:'t',x:24,y:18,fill:`var(${TYPES[n.type].c})`},g);t.textContent=n.role||TYPES[n.type].name;
+    const l=el('text',{class:'l',x:10,y:37},g);l.textContent=n.label.length>28?n.label.slice(0,27)+'…':n.label;
+    if(n.sens){const s=el('text',{class:'t',x:NW-10,y:18,'text-anchor':'end',fill:'var(--warn)'},g);s.textContent=n.sens==='PHI'?'PHI':'SoR'}
+    const ec=EDGES.filter(e=>(e.from===id||e.to===id)&&needsGuard(e)).length;
+    if(ec&&S.view!=='req'){el('circle',{cx:NW,cy:0,r:6,fill:'var(--warn)'},g)}
+  }));
+  applyXf();
+  renderChrome();
+}
+function applyXf(){const x=S.xf[S.view];if(x)world.setAttribute('transform',`translate(${x.x},${x.y}) scale(${x.k})`)}
+function fit(){
+  const v=view();const P=S.pos[v.id];const ids=v.cols.flatMap(c=>c[1]);
+  const xs=ids.map(i=>P[i].x),ys=ids.map(i=>P[i].y);
+  const minX=Math.min(...xs)-40,maxX=Math.max(...xs)+NW+80,minY=Math.min(...ys)-40,maxY=Math.max(...ys)+NH+30;
+  const r=svg.getBoundingClientRect();const topPad=70,botPad=$('tip').hidden?20:110;
+  const k=Math.max(.35,Math.min(1.15,Math.min(r.width/(maxX-minX),(r.height-topPad-botPad)/(maxY-minY))));
+  S.xf[S.view]={k,x:(r.width-(maxX-minX)*k)/2-minX*k,y:topPad+((r.height-topPad-botPad)-(maxY-minY)*k)/2-minY*k};
+  applyXf();
+}
+
+/* ---------- drawer ---------- */
+function renderChrome(){
+  const v=view();
+  $('vTitle').textContent=v.name+' view';$('vSub').textContent=v.sub;
+  $('views').innerHTML=VIEWS.map(x=>{const n=new Set(x.cols.flatMap(c=>c[1])).size;return `<button class="view ${x.id===S.view?'on':''}" data-view="${x.id}"><span class="vi">${x.key}</span><span class="vt"><b>${x.name}</b><span>${esc(x.sub.split(',')[0])}</span></span><span class="count">${n}</span></button>`}).join('');
+  const types=[...new Set(v.cols.flatMap(c=>c[1]).map(i=>byId[i].type))];
+  $('legend').innerHTML=types.map(t=>{const n=v.cols.flatMap(c=>c[1]).filter(i=>byId[i].type===t).length;return `<label class="lg"><input type="checkbox" id="lg_${t}" data-type="${t}" ${S.hidden[t]?'':'checked'}><span class="sw" style="border-color:var(${TYPES[t].c})"></span><span>${TYPES[t].name}</span><span class="n">${n}</span></label>`}).join('');
+  $('patternSec').hidden=S.view!=='orch';
+  $('patterns').innerHTML=PATTERNS.map((p,i)=>`<button class="pattern" data-pattern="${i}"><b>${p.name}<span class="pill ${p.use?'use':''}">${p.use?'in use':'available'}</span></b><span>${esc(p.desc.split('.')[0])}.</span></button>`).join('');
+  renderKB();
+  const g=EDGES.filter(needsGuard).length;$('guardCount').textContent=g;
+  $('guardBtn').className='btn '+(g?'warnbtn':'okbtn');
+  $('guardBtn').querySelector('.lbl').innerHTML=g?'&nbsp;need a guard':'&nbsp;all guarded';
+  if(!g)$('guardCount').textContent='✓';
+  renderTip();
+}
+function renderKB(){
+  const hooksCount=EDGES.reduce((s,e)=>s+e.hooks.length,0);
+  const groups=[
+   ['Inception',[['Requirements','req'],['User stories','story'],['KPIs','kpi']]],
+   ['Construction',[['Agents','agent'],['Skills','skill'],['Tests','test']]],
+   ['Operations',[['Metrics','metric'],['Evals','eval']]],
+  ];
+  let h='';
+  groups.forEach(([ph,sets])=>{
+    h+=`<div class="kb-phase"><h4>${ph}${ph==='Construction'?` <span class="pill">${hooksCount} hooks</span>`:''}</h4>`;
+    sets.forEach(([label,t])=>{
+      h+=`<div class="dlabel" style="margin-top:4px">${label}</div>`;
+      NODES.filter(n=>n.type===t).forEach(n=>{
+        let meta='';
+        if(t==='eval')meta=`<span class="meta ${n.score>=0.9?'good':'bad'}">${Math.round(n.score*100)}%</span>`;
+        else if(t==='metric'||t==='kpi')meta=`<span class="meta">${esc(n.desc.replace(/^(Current|Today): /,'').replace(/\.$/,'').split(' (')[0])}</span>`;
+        else if(t==='story'){const ok=EDGES.some(e=>e.from===n.id&&byId[e.to].type==='function');meta=`<span class="meta ${ok?'good':'bad'}">${ok?'linked':'unlinked'}</span>`}
+        h+=`<button class="kb-item ${S.kbSel===n.id?'on':''}" data-kb="${n.id}"><i style="background:var(${TYPES[t].c})"></i><span>${esc(n.label)}</span>${meta}</button>`;
+      });
+    });
+    h+='</div>';
+  });
+  $('kb').innerHTML=h;
+}
+
+/* ---------- guidance ---------- */
+const TIPS={
+ ui:['Traceability','Every component should trace to a function, and every function to a user story. Select a node to light up its full lineage across all four views.'],
+ data:['Governance','Amber dashed lines touch PHI or write to a system of record and have no guard yet. Tap one to add a hook or a human checkpoint.'],
+ orch:['Building effective agents','Start with the simplest pattern that works. This flow combines routing, orchestrator-workers and a human checkpoint. Add an evaluator loop only if evals show it helps.'],
+ req:['Demystifying evals','Start with 20–50 eval tasks drawn from real failures. Link each test to the function it verifies and to the eval that automates it.'],
+ edge:['Hooks','Hooks run at fixed moments: before an action, after it, at a handoff, or when a task is done. Pick the moment first, then the kind of check.'],
+ agent:['Multi-agent research system','Give every subagent a full brief: objective, output format, tools and boundaries. Vague briefs lead to duplicated or missed work.'],
+ eval:['Demystifying evals','Grade the outcome, not the exact path. For customer-facing flows, track pass^k: the chance that every one of k runs succeeds.'],
+ skill:['Agent Skills','A skill loads in stages. Only its name and description sit in context until the agent needs the full instructions. Keep the description specific.'],
+ human:['Agent teams','Put people where judgment matters: before irreversible writes and on clinical risk. Approvals come from people, never relayed by another agent.'],
+};
+function renderTip(key){
+  if(S.tipOff){$('tip').hidden=true;return}
+  let k=key||S.view;
+  if(!key&&S.sel){if(S.sel.kind==='edge')k='edge';else{const t=byId[S.sel.id].type;if(TIPS[t])k=t}}
+  const [src,txt]=TIPS[k]||TIPS[S.view];
+  $('tipSrc').textContent=src;$('tipText').textContent=txt;$('tip').hidden=false;
+}
+
+/* ---------- inspector ---------- */
+const insp=$('inspector');
+function closeInspector(){S.sel=null;S.kbSel=null;insp.hidden=true;render()}
+function select(kind,id){S.sel={kind,id};if(kind==='node')S.kbSel=null;render();kind==='edge'?renderEdge(id):renderNode(id);insp.hidden=false;insp.scrollTop=0}
+function chipT(t){return `<span class="typechip" style="color:var(${TYPES[t].c})">${TYPES[t].name}</span>`}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'')}
+function matcherFor(e){const t=byId[e.to];if(t.type==='tool'){const [srv,fn]=t.label.split('.');return `mcp__${slug(srv)}__${slug(fn||'call')}`}if(t.type==='agent')return slug(t.label);return slug(t.label)}
+function hookConfig(e){
+  const out={};
+  e.hooks.forEach(h=>{
+    const ev=h.when==='handoff'?'SubagentStart':WHEN[h.when].ev;
+    const handler={type:CHECK[h.check].h};
+    if(h.check==='script')handler.command=`./hooks/${slug(ACTION[h.action])}.sh`;
+    if(h.check==='human'){handler.command='./hooks/require-approval.sh';handler.statusMessage='Waiting for '+(e.checkpoint?byId[e.checkpoint].label.toLowerCase():'approval')}
+    if(h.check==='llm'||h.check==='agent')handler.prompt=h.note+' Input: $ARGUMENTS';
+    if(h.check==='http')handler.url='https://hooks.example.internal/'+slug(byId[e.to].label);
+    const grp={hooks:[handler]};if(!['Stop','TaskCompleted'].includes(ev))grp.matcher=matcherFor(e);
+    (out[ev]=out[ev]||[]).push(grp);
+  });
+  return {hooks:out};
+}
+function renderEdge(id){
+  const e=EDGES.find(x=>x.id===id);const a=byId[e.from],b=byId[e.to];
+  let h=`<div class="ihead"><div class="row"><span class="typechip" style="color:var(--accent)">Connection</span><button class="icon-btn" data-close aria-label="Close inspector">×</button></div>
+  <h2>${esc(a.label)} <span style="color:var(--muted);font-weight:400">${esc(e.kind)}</span> ${esc(b.label)}</h2>
+  <p>What should happen on this connection?</p></div>`;
+  if(e.risk){h+=`<div class="isec">${needsGuard(e)?`<div class="callout warn"><span>!</span><span><b>${esc(e.risk)}.</b> Add a hook or a human checkpoint before this goes live.</span></div>`:`<div class="callout ok"><span>✓</span><span><b>Guarded.</b> ${esc(e.risk)}, covered by ${[e.hooks.length?e.hooks.length+' hook'+(e.hooks.length>1?'s':''):'',e.checkpoint?'a human checkpoint':''].filter(Boolean).join(' and ')}.</span></div>`}</div>`}
+  // hooks
+  h+=`<div class="isec"><h3>Hooks <span class="hint">automatic checks</span></h3>`;
+  if(!e.hooks.length)h+=`<p class="help">No hooks yet. A hook runs a check at a fixed moment and can block, clean up, log or add context.</p>`;
+  e.hooks.forEach((k,i)=>{h+=`<div class="card"><div class="ct"><span>${WHEN[k.when].l}</span><button class="x" data-rmhook="${i}" aria-label="Remove hook">×</button></div><div class="cd"><b>${CHECK[k.check].l}</b> · ${ACTION[k.action]}</div><div class="cd">${esc(k.note)}</div></div>`});
+  h+=`<form class="form" id="hookForm">
+    <label>When<select id="hkWhen">${Object.entries(WHEN).map(([k,v])=>`<option value="${k}">${v.l}</option>`).join('')}</select></label>
+    <label>Check<select id="hkCheck">${Object.entries(CHECK).map(([k,v])=>`<option value="${k}">${v.l}</option>`).join('')}</select></label>
+    <label class="full">Then<select id="hkAction">${Object.entries(ACTION).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select></label>
+    <label class="full">Describe the rule<textarea id="hkNote" placeholder="e.g. Hold the write until the account manager approves the diff."></textarea></label>
+    <button class="btn primary full" type="submit">Add hook</button></form>`;
+  if(e.hooks.length)h+=`<details class="under"><summary>Under the hood: generated hook config</summary><pre class="code">${esc(JSON.stringify(hookConfig(e),null,2))}</pre></details>`;
+  h+=`</div>`;
+  // human checkpoint
+  const humans=NODES.filter(n=>n.type==='human');
+  h+=`<div class="isec"><h3>Human checkpoint <span class="hint">person in the loop</span></h3>
+    <div class="addrow"><select id="hcSel" aria-label="Human checkpoint"><option value="">None</option>${humans.map(n=>`<option value="${n.id}" ${e.checkpoint===n.id?'selected':''}>${esc(n.label)} approves</option>`).join('')}</select></div></div>`;
+  // skills
+  const skills=NODES.filter(n=>n.type==='skill');
+  h+=`<div class="isec"><h3>Skills <span class="hint">know-how for this step</span></h3><div class="chips">${e.skills.map(s=>`<span class="chip">${esc(byId[s].label)}<button class="x" data-rmskill="${s}" aria-label="Remove skill">×</button></span>`).join('')||'<span class="help">None attached.</span>'}</div>
+    <div class="addrow"><select id="skSel" aria-label="Skill to attach">${skills.filter(s=>!e.skills.includes(s.id)).map(s=>`<option value="${s.id}">${esc(s.label)}</option>`).join('')}<option value="__new">+ New skill (SKILL.md)</option></select><button class="btn" id="skAdd">Attach</button></div></div>`;
+  // evals
+  const evals=NODES.filter(n=>n.type==='eval');
+  h+=`<div class="isec"><h3>Evals <span class="hint">how we know it works</span></h3>${e.evals.map(s=>{const n=byId[s];return `<div class="card"><div class="ct"><span>${esc(n.label)}</span><button class="x" data-rmeval="${s}" aria-label="Remove eval">×</button></div><div class="cd">${n.grader} grader · ${n.suite} · ${n.metric} = ${Math.round(n.score*100)}%</div></div>`}).join('')||'<p class="help">None attached. Evals grade the outcome of this step across repeated runs.</p>'}
+    <div class="addrow"><select id="evSel" aria-label="Eval to attach">${evals.filter(s=>!e.evals.includes(s.id)).map(s=>`<option value="${s.id}">${esc(s.label)}</option>`).join('')}<option value="__new">+ New eval suite</option></select><button class="btn" id="evAdd">Attach</button></div></div>`;
+  insp.innerHTML=h;
+  $('hookForm').onsubmit=ev=>{ev.preventDefault();const note=$('hkNote').value.trim()||'Describe the rule.';e.hooks.push({when:$('hkWhen').value,check:$('hkCheck').value,action:$('hkAction').value,note});toast('Hook added');render();renderEdge(id)};
+  $('hcSel').onchange=ev=>{e.checkpoint=ev.target.value||null;toast(e.checkpoint?'Checkpoint added':'Checkpoint removed');render();renderEdge(id)};
+  $('skAdd').onclick=()=>{const v=$('skSel').value;if(v==='__new'){const nid='k_new'+(NODES.length);const n={id:nid,type:'skill',label:'new-skill-'+(NODES.filter(x=>x.type==='skill').length+1),desc:'Draft skill. Add a description so agents know when to load it.'};NODES.push(n);byId[nid]=n;e.skills.push(nid)}else if(v)e.skills.push(v);toast('Skill attached');render();renderEdge(id)};
+  $('evAdd').onclick=()=>{const v=$('evSel').value;if(v==='__new'){const nid='e_new'+(NODES.length);const n={id:nid,type:'eval',label:'New suite: '+e.kind,desc:'Draft. Add 20–50 tasks from real cases.',grader:'Model rubric',suite:'Capability',metric:'pass@1',score:0,tasks:0};NODES.push(n);byId[nid]=n;e.evals.push(nid)}else if(v)e.evals.push(v);toast('Eval attached');render();renderEdge(id)};
+  insp.querySelectorAll('[data-rmhook]').forEach(b=>b.onclick=()=>{e.hooks.splice(+b.dataset.rmhook,1);render();renderEdge(id)});
+  insp.querySelectorAll('[data-rmskill]').forEach(b=>b.onclick=()=>{e.skills=e.skills.filter(s=>s!==b.dataset.rmskill);render();renderEdge(id)});
+  insp.querySelectorAll('[data-rmeval]').forEach(b=>b.onclick=()=>{e.evals=e.evals.filter(s=>s!==b.dataset.rmeval);render();renderEdge(id)});
+}
+function renderNode(id){
+  const n=byId[id];
+  let h=`<div class="ihead"><div class="row">${chipT(n.type)}<button class="icon-btn" data-close aria-label="Close inspector">×</button></div><h2>${esc(n.label)}</h2><p>${esc(n.desc)}</p></div>`;
+  h+=`<div class="isec"><dl class="kv"><dt>AI-DLC phase</dt><dd>${phaseOf(n.type)}</dd>${n.role?`<dt>Role</dt><dd>${n.role}</dd>`:''}${n.sens?`<dt>Sensitivity</dt><dd style="color:var(--warn)">${n.sens}</dd>`:''}<dt>Appears in</dt><dd>${VIEWS.filter(v=>v.cols.some(c=>c[1].includes(id))).map(v=>v.name).join(', ')}</dd></dl></div>`;
+  if(n.brief){h+=`<div class="isec"><h3>Delegation brief <span class="hint">multi-agent guidance</span></h3><dl class="kv"><dt>Objective</dt><dd>${esc(n.brief.objective)}</dd><dt>Output format</dt><dd>${esc(n.brief.output)}</dd><dt>Tools</dt><dd>${esc(n.brief.tools)}</dd><dt>Boundaries</dt><dd>${esc(n.brief.bounds)}</dd></dl></div>
+    <div class="isec"><h3>Context checklist</h3><ul class="checks"><li><span class="y">✓</span>System prompt at the right altitude: guidance, not hard-coded logic</li><li><span class="y">✓</span>Tools are distinct, with no overlapping purpose</li><li><span class="${n.id==='a_lead'?'y':'n'}">${n.id==='a_lead'?'✓':'!'}</span>${n.id==='a_lead'?'Writes its plan to memory so it survives compaction':'Add 2–3 canonical examples'}</li><li><span class="y">✓</span>Pulls data just in time through tools, without preloading it</li></ul></div>`}
+  if(n.type==='eval'){h+=`<div class="isec"><h3>Latest run</h3><div class="score" style="color:var(${n.score>=0.9?'--ok':'--warn'})">${Math.round(n.score*100)}%</div><dl class="kv"><dt>Metric</dt><dd>${n.metric}</dd><dt>Grader</dt><dd>${n.grader}</dd><dt>Suite</dt><dd>${n.suite}${n.suite==='Regression'?' (should stay near 100%)':' (room to improve)'}</dd><dt>Tasks</dt><dd>${n.tasks}</dd></dl></div>`}
+  if(n.type==='skill'){h+=`<div class="isec"><h3>SKILL.md preview</h3><pre class="code">${esc(skillMd(n))}</pre></div>`}
+  if(n.type==='function'){
+    const has=t=>EDGES.some(e=>(e.from===id&&byId[e.to].type===t)||(e.to===id&&byId[e.from].type===t));
+    const items=[['Linked to a user story',has('story')],['Handled by an agent',has('agent')],['Measured by a metric',has('metric')],['Verified by a test',has('test')],['Touches data',has('data')]];
+    const sc=items.filter(i=>i[1]).length;
+    h+=`<div class="isec"><h3>Coverage <span class="hint">${sc} of ${items.length}</span></h3><ul class="checks">${items.map(([l,ok])=>`<li><span class="${ok?'y':'n'}">${ok?'✓':'!'}</span>${l}</li>`).join('')}</ul></div>`;
+  }
+  const conns=EDGES.filter(e=>e.from===id||e.to===id);
+  h+=`<div class="isec"><h3>Connections <span class="hint">${conns.length}</span></h3><div class="conn">${conns.map(e=>{const out=e.from===id;const o=byId[out?e.to:e.from];return `<button data-goedge="${e.id}"><span class="k">${out?'':'← '}${esc(e.kind)}${out?' →':''}</span><span>${esc(o.label)}${needsGuard(e)?' <span style="color:var(--warn)">!</span>':''}</span></button>`}).join('')}</div></div>`;
+  insp.innerHTML=h;
+  insp.querySelectorAll('[data-goedge]').forEach(b=>b.onclick=()=>{const e=EDGES.find(x=>x.id===b.dataset.goedge);const v=VIEWS.find(v=>[e.from,e.to].every(i=>v.cols.some(c=>c[1].includes(i))));if(v&&v.id!==S.view)switchView(v.id);select('edge',e.id)});
+}
+insp.addEventListener('click',ev=>{if(ev.target.closest('[data-close]'))closeInspector()});
+
+/* ---------- exports ---------- */
+function skillMd(n){
+  const users=EDGES.filter(e=>e.to===n.id&&e.kind==='uses skill').map(e=>byId[e.from].label);
+  const evs=EDGES.filter(e=>e.skills.includes(n.id)).map(e=>byId[e.from].label+' → '+byId[e.to].label);
+  return `---\nname: ${n.label}\ndescription: ${n.desc}\n---\n\n# ${n.label}\n\n## When to use\nLoad when ${users.length?users.join(', '):'an agent'} needs this know-how${evs.length?`, or on: ${evs.join('; ')}`:''}.\n\n## Instructions\n1. …\n\n## Examples\n- …\n`;
+}
+const EXPORTS={
+ 'JSON-LD':()=>JSON.stringify({'@context':{'@vocab':'urn:agent-graph:vocab#',name:'http://schema.org/name',description:'http://schema.org/description'},'@graph':[
+   ...NODES.map(n=>({'@id':'node:'+n.id,'@type':TYPES[n.type].name.replace(/[^A-Za-z]/g,''),name:n.label,description:n.desc,phase:phaseOf(n.type),...(n.sens?{sensitivity:n.sens}:{})})),
+   ...EDGES.map(e=>({'@id':'edge:'+e.id,'@type':'Relation',kind:e.kind,source:'node:'+e.from,target:'node:'+e.to,...(e.risk?{risk:e.risk}:{}),...(e.hooks.length?{hooks:e.hooks}:{}),...(e.checkpoint?{approvedBy:'node:'+e.checkpoint}:{}),...(e.skills.length?{skills:e.skills.map(s=>'node:'+s)}:{}),...(e.evals.length?{evaluatedBy:e.evals.map(s=>'node:'+s)}:{})}))]},null,2),
+ 'Cypher':()=>[...NODES.map(n=>`CREATE (:${TYPES[n.type].name.replace(/[^A-Za-z]/g,'')} {id:'${n.id}', name:'${n.label.replace(/'/g,"\\'")}', phase:'${phaseOf(n.type)}'});`),'',
+   ...EDGES.map(e=>`MATCH (a {id:'${e.from}'}), (b {id:'${e.to}'}) CREATE (a)-[:${e.kind.toUpperCase().replace(/[^A-Z]+/g,'_')} {hooks:${e.hooks.length}, guarded:${guarded(e)}${e.risk?`, risk:'${e.risk}'`:''}}]->(b);`)].join('\n'),
+ 'Hooks':()=>{const merged={hooks:{}};EDGES.forEach(e=>{const c=hookConfig(e).hooks;for(const k in c)(merged.hooks[k]=merged.hooks[k]||[]).push(...c[k])});return '// .claude/settings.json (generated from connection hooks)\n'+JSON.stringify(merged,null,2)},
+ 'SKILL.md':()=>NODES.filter(n=>n.type==='skill').map(n=>`# skills/${n.label}/SKILL.md\n\n`+skillMd(n)).join('\n\n'),
+ 'MCP server':()=>JSON.stringify({name:'agent-graph',description:'Read and update the project knowledge graph from any MCP-capable agent.',tools:[
+   {name:'graph.query',description:'Run a read-only openCypher query over the project graph.',input:{cypher:'string'}},
+   {name:'graph.get_lineage',description:'Return everything upstream and downstream of a node (requirements to KPIs).',input:{node_id:'string'}},
+   {name:'graph.list_unguarded',description:'List connections that touch PHI or systems of record without a hook or checkpoint.',input:{}},
+   {name:'graph.attach_hook',description:'Attach a hook to a connection. Needs a human to approve before it takes effect.',input:{edge_id:'string',when:Object.keys(WHEN).join('|'),check:Object.keys(CHECK).join('|'),note:'string'}},
+   {name:'graph.record_eval',description:'Record an eval run result against an eval node.',input:{eval_id:'string',score:'number',trials:'integer'}}],
+   resources:['graph://nodes','graph://edges','graph://skills/{name}/SKILL.md']},null,2),
+};
+let exTab='JSON-LD';
+function renderExport(){
+  $('exTabs').innerHTML=Object.keys(EXPORTS).map(k=>`<button class="tab ${k===exTab?'on':''}" data-tab="${k}">${k}</button>`).join('');
+  $('exBody').textContent=EXPORTS[exTab]();
+  $('exNote').textContent={'JSON-LD':'Linked-data format other knowledge graphs can merge.','Cypher':'Load into Neo4j, Memgraph or any openCypher store.','Hooks':'Ready to drop into an agent harness that supports hooks.','SKILL.md':'Open Agent Skills format, one folder per skill.','MCP server':'The tools an external agent would see.'}[exTab];
+}
+$('exportBtn').onclick=()=>{$('exportModal').hidden=false;renderExport();$('exClose').focus()};
+$('exClose').onclick=()=>$('exportModal').hidden=true;
+$('exportModal').onclick=ev=>{if(ev.target.id==='exportModal')$('exportModal').hidden=true;const t=ev.target.closest('[data-tab]');if(t){exTab=t.dataset.tab;renderExport()}};
+$('exCopy').onclick=()=>{const txt=$('exBody').textContent;const done=()=>toast('Copied');try{navigator.clipboard.writeText(txt).then(done,()=>{selectText();toast('Text selected. Press Ctrl+C to copy.')})}catch(_){selectText()}};
+function selectText(){const r=document.createRange();r.selectNodeContents($('exBody'));const s=getSelection();s.removeAllRanges();s.addRange(r)}
+let tt;function toast(m){let t=document.querySelector('.toast');if(!t){t=document.createElement('div');t.className='toast';t.setAttribute('role','status');document.body.appendChild(t)}t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,1600)}
+
+/* ---------- interactions ---------- */
+function switchView(id){S.view=id;S.kbSel=null;if(S.sel&&S.sel.kind==='edge'){const e=EDGES.find(x=>x.id===S.sel.id);if(!(inView(e.from)&&inView(e.to))){S.sel=null;insp.hidden=true}}render();if(!S.xf[id])fit();closeDrawer()}
+$('views').onclick=ev=>{const b=ev.target.closest('[data-view]');if(b)switchView(b.dataset.view)};
+$('legend').onchange=ev=>{const t=ev.target.dataset.type;if(t){S.hidden[t]=!ev.target.checked;render()}};
+$('patterns').onclick=ev=>{const b=ev.target.closest('[data-pattern]');if(!b)return;const p=PATTERNS[+b.dataset.pattern];TIPS._p=[p.src+' · '+p.name,p.desc];renderTip('_p')};
+$('kb').onclick=ev=>{const b=ev.target.closest('[data-kb]');if(!b)return;const id=b.dataset.kb;const v=VIEWS.find(v=>v.id===S.view&&v.cols.some(c=>c[1].includes(id)))||VIEWS.find(v=>v.cols.some(c=>c[1].includes(id)));if(v&&v.id!==S.view)switchView(v.id);select('node',id);S.kbSel=id;render()};
+$('guardBtn').onclick=()=>{const list=EDGES.filter(needsGuard);if(!list.length){toast('Every sensitive connection has a guard');return}const cur=S.sel&&S.sel.kind==='edge'?list.findIndex(e=>e.id===S.sel.id):-1;const e=list[(cur+1)%list.length];const v=VIEWS.find(v=>v.id===S.view&&[e.from,e.to].every(i=>v.cols.some(c=>c[1].includes(i))))||VIEWS.find(v=>[e.from,e.to].every(i=>v.cols.some(c=>c[1].includes(i))));if(v.id!==S.view)switchView(v.id);select('edge',e.id)};
+$('tipClose').onclick=()=>{S.tipOff=true;$('tip').hidden=true};
+$('zIn').onclick=()=>zoomBy(1.2);$('zOut').onclick=()=>zoomBy(1/1.2);$('zFit').onclick=fit;
+function zoomBy(f,cx,cy){const r=svg.getBoundingClientRect();const x=S.xf[S.view];cx=cx??r.width/2;cy=cy??r.height/2;const k=Math.max(.3,Math.min(2.2,x.k*f));const wx=(cx-x.x)/x.k,wy=(cy-x.y)/x.k;x.k=k;x.x=cx-wx*k;x.y=cy-wy*k;applyXf()}
+svg.addEventListener('wheel',ev=>{ev.preventDefault();const r=svg.getBoundingClientRect();zoomBy(Math.exp(-ev.deltaY*0.0015),ev.clientX-r.left,ev.clientY-r.top)},{passive:false});
+let drag=null;
+svg.addEventListener('pointerdown',ev=>{
+  const nodeG=ev.target.closest('[data-node]'),edgeG=ev.target.closest('[data-edge]');
+  const x=S.xf[S.view];
+  if(nodeG){const id=nodeG.dataset.node;const p=S.pos[S.view][id];drag={mode:'node',id,sx:ev.clientX,sy:ev.clientY,ox:p.x,oy:p.y,moved:false}}
+  else if(edgeG){drag={mode:'edge',id:edgeG.dataset.edge,sx:ev.clientX,sy:ev.clientY,moved:false}}
+  else{drag={mode:'pan',sx:ev.clientX,sy:ev.clientY,ox:x.x,oy:x.y,moved:false};svg.classList.add('panning')}
+  svg.setPointerCapture(ev.pointerId);
+});
+svg.addEventListener('pointermove',ev=>{
+  if(!drag)return;const dx=ev.clientX-drag.sx,dy=ev.clientY-drag.sy;if(Math.abs(dx)+Math.abs(dy)>4)drag.moved=true;if(!drag.moved)return;
+  const x=S.xf[S.view];
+  if(drag.mode==='pan'){x.x=drag.ox+dx;x.y=drag.oy+dy;applyXf()}
+  else if(drag.mode==='node'){const p=S.pos[S.view][drag.id];p.x=drag.ox+dx/x.k;p.y=drag.oy+dy/x.k;render()}
+});
+svg.addEventListener('pointerup',ev=>{
+  svg.classList.remove('panning');if(!drag)return;const d=drag;drag=null;if(d.moved)return;
+  if(d.mode==='node')select('node',d.id);else if(d.mode==='edge')select('edge',d.id);else if(S.sel)closeInspector();
+});
+svg.addEventListener('keydown',ev=>{if(ev.key!=='Enter'&&ev.key!==' ')return;const n=ev.target.closest('[data-node]'),e=ev.target.closest('[data-edge]');if(n){ev.preventDefault();select('node',n.dataset.node)}else if(e){ev.preventDefault();select('edge',e.dataset.edge)}});
+document.addEventListener('keydown',ev=>{if(ev.key==='Escape'){if(!$('exportModal').hidden)$('exportModal').hidden=true;else if(S.sel)closeInspector();closeDrawer()}});
+function closeDrawer(){$('drawer').classList.remove('open');$('scrim').classList.remove('open')}
+$('menuBtn').onclick=()=>{$('drawer').classList.add('open');$('scrim').classList.add('open')};
+$('scrim').onclick=closeDrawer;
+window.addEventListener('resize',()=>{clearTimeout(window.__rt);window.__rt=setTimeout(fit,120)});
+
+render();fit();
+// open with a sensitive connection selected so the core interaction is visible at rest
+requestAnimationFrame(()=>{switchView('data');const e=EDGES.find(x=>x.from==='f_simulate'&&x.to==='d_members');if(window.innerWidth>820){select('edge',e.id);requestAnimationFrame(fit)}});
+})();
+</script>

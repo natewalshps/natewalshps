@@ -1,0 +1,216 @@
+<title>Agentic Project Model</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column with wide tables; the model is a stack of layers mapped to canvas primitives */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --fg:#17202c; --muted:#596476; --line:#dce1e8;
+  --accent:#3550d6; --accent-soft:#e8ecfb; --warn:#a15c07; --warn-soft:#fdf2dc;
+  --t-ux:#3550d6; --t-data:#a15c07; --t-orch:#b4235f; --t-kb:#0f766e;
+  --font-display:"Space Grotesk","IBM Plex Sans",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10141b; --surface:#171d26; --fg:#e7ebf1; --muted:#9aa5b5; --line:#2a3340;
+  --accent:#8ea2ff; --accent-soft:#1e2745; --warn:#f0b35b; --warn-soft:#33270f;
+  --t-ux:#8ea2ff; --t-data:#f0b35b; --t-orch:#f07aa8; --t-kb:#4fd1c0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10141b; --surface:#171d26; --fg:#e7ebf1; --muted:#9aa5b5; --line:#2a3340;
+  --accent:#8ea2ff; --accent-soft:#1e2745; --warn:#f0b35b; --warn-soft:#33270f;
+  --t-ux:#8ea2ff; --t-data:#f0b35b; --t-orch:#f07aa8; --t-kb:#4fd1c0; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:920px;margin:0 auto;padding-block:48px 80px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.2;margin:0}
+h1{font-size:clamp(30px,5vw,44px);font-weight:600;letter-spacing:-.01em}
+h2{font-size:26px;font-weight:600}
+h3{font-size:17px;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:16px}
+.lede{font-size:19px;color:var(--muted);max-width:62ch}
+section{display:flex;flex-direction:column;gap:18px}
+.shift{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:stretch}
+.shift .col{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.shift .arrow{align-self:center;font-family:var(--font-mono);color:var(--muted)}
+.shift ul{margin:0;padding-left:18px;color:var(--muted)}
+.layers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.layer{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.layer .tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.layer p{color:var(--muted);font-size:15px}
+.layer .types{font-family:var(--font-mono);font-size:12.5px;color:var(--fg)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14.5px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+code,.mono{font-family:var(--font-mono);font-size:.88em}
+code{background:var(--accent-soft);padding:1px 5px;border-radius:4px}
+.phases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.phase{border-top:3px solid var(--t-kb);background:var(--surface);border-radius:0 0 10px 10px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;border-left:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.phase ul{margin:0;padding-left:18px;color:var(--muted);font-size:15px}
+.note{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);border-radius:10px;padding:14px 18px;font-size:15px}
+.note strong{color:var(--warn)}
+ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px;max-width:70ch}
+ol.steps li::marker{font-family:var(--font-mono);color:var(--accent)}
+.sources{columns:2;column-gap:28px;font-size:14px;padding-left:18px;margin:0}
+.sources li{break-inside:avoid;margin-bottom:6px}
+a{color:var(--accent)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:720px){
+  .shift{grid-template-columns:1fr}.shift .arrow{justify-self:center;transform:rotate(90deg)}
+  .layers,.phases{grid-template-columns:1fr}
+  .sources{columns:1}
+  main{padding-block:28px 56px;gap:44px}
+}
+</style>
+
+<main>
+  <header>
+    <span class="eyebrow">Concept brief · Bodhi × Slingshot</span>
+    <h1>Agentic Project Model</h1>
+    <p class="lede">A way to describe an AI-driven workflow as an open knowledge graph, built from Anthropic's published guidance on agents, hooks, skills and evals, with AI-DLC as the lifecycle that fills it in. The canvas prototype is built on this model.</p>
+  </header>
+
+  <section>
+    <span class="eyebrow">The shift</span>
+    <h2>From a proprietary agent to an open graph any agent can use</h2>
+    <div class="shift">
+      <div class="col">
+        <h3>Today</h3>
+        <ul>
+          <li>The platform's own agent runs the work</li>
+          <li>Requirements, prompts and tests live inside the tool</li>
+          <li>Clients can't bring the agents they already use</li>
+        </ul>
+      </div>
+      <div class="arrow" aria-hidden="true">→</div>
+      <div class="col">
+        <h3>Proposed</h3>
+        <ul>
+          <li>The product is the <strong>project graph</strong>: requirements, stories, UI, data, agents, hooks, evals, KPIs</li>
+          <li>The graph is served over MCP and exported as Agent Skills, so Claude, Copilot, Bedrock or in-house agents can read and write it</li>
+          <li>The canvas is where people see and change it</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">The model</span>
+    <h2>Four layers, one graph</h2>
+    <p>Each layer is a view on the canvas. They share the same nodes, so a function in the UI view is the same function the agents handle in the Orchestration view. Selecting any node traces its lineage across all four.</p>
+    <div class="layers">
+      <div class="layer">
+        <span class="tag"><i class="dot" style="background:var(--t-kb)"></i>Requirements</span>
+        <h3>Why it exists, and how we know it works</h3>
+        <p>Produced in AI-DLC Inception, then checked against in Operations.</p>
+        <span class="types">Requirement · User story · KPI · Metric · Test</span>
+      </div>
+      <div class="layer">
+        <span class="tag"><i class="dot" style="background:var(--t-ux)"></i>UI</span>
+        <h3>What people see and touch</h3>
+        <p>Pages contain components, and components trigger or display functions.</p>
+        <span class="types">Page · Component · Function</span>
+      </div>
+      <div class="layer">
+        <span class="tag"><i class="dot" style="background:var(--t-data)"></i>Data</span>
+        <h3>What each function reads and writes</h3>
+        <p>Sensitivity travels with the data. A connection that touches PHI, or writes to a system of record, gets flagged until someone guards it.</p>
+        <span class="types">Data entity · Data source · Function · Component</span>
+      </div>
+      <div class="layer">
+        <span class="tag"><i class="dot" style="background:var(--t-orch)"></i>Orchestration</span>
+        <h3>Who does the work: agents and people</h3>
+        <p>Agents, the skills and tools they use, the people who approve their work, and the evals that grade them.</p>
+        <span class="types">Agent · Skill · Tool (MCP) · Human checkpoint · Eval · Hook</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Sources → canvas</span>
+    <h2>What we take from Anthropic's guidance</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Source</th><th>Core guidance</th><th>Becomes in the canvas</th></tr></thead>
+        <tbody>
+          <tr><td>Building effective agents</td><td>Workflows follow set code paths; agents direct themselves. Patterns: prompt chain, routing, parallelization, orchestrator-workers, evaluator-optimizer. Start simple and add complexity only when it measurably helps.</td><td>Pattern palette in Orchestration view; a "simplest pattern first" nudge</td></tr>
+          <tr><td>Multi-agent research system</td><td>A lead agent plans and delegates to subagents in parallel. Every delegation needs a brief: objective, output format, tools, boundaries. Effort scales with the task. Checkpoint and resume rather than restart.</td><td>Lead and subagent nodes; a delegation-brief form on every agent</td></tr>
+          <tr><td>Context engineering</td><td>Keep system prompts at the right altitude, keep tools distinct, use a few canonical examples, pull context just in time, take notes outside the context window, compact long runs.</td><td>Context checklist on each agent</td></tr>
+          <tr><td>Agent Skills</td><td>A skill is a folder with <code>SKILL.md</code>. The name and description load first and the body loads only when needed. It is an open standard.</td><td>Skill nodes that export as <code>SKILL.md</code>; skills can be attached to any connection</td></tr>
+          <tr><td>Model Context Protocol</td><td>A standard way to connect agents to tools, resources and prompts.</td><td>Tool and source nodes; the graph itself served as an MCP server</td></tr>
+          <tr><td>Hooks</td><td>Code or a model runs at fixed moments: before a tool runs (can block or approve), after it runs, when a subagent starts or stops, when a task completes, when the agent stops.</td><td>Tap a connection, pick a moment and a check. The canvas writes the hook config.</td></tr>
+          <tr><td>Agent teams</td><td>A lead plus teammates, a shared task list and direct messaging. Quality gates run when a task completes or a teammate goes idle. Three to five teammates is a sensible default.</td><td>Team structure in Orchestration view; "on task done" quality-gate hooks</td></tr>
+          <tr><td>Evals for agents</td><td>Each task runs as several trials, scored by code, model or human graders. Capability suites start with a low pass rate; regression suites stay near 100%. Use pass@k when one success is enough and pass^k when every run must succeed. Start with 20–50 tasks taken from real failures.</td><td>Eval nodes with grader type, suite type and pass metric, attachable to any connection</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Hooks, in plain language</span>
+    <h2>Pick the moment, then the check</h2>
+    <p>Non-technical users never see an event name. They choose <em>when</em> something should happen on a connection and <em>what kind of check</em> runs. The canvas maps that to the underlying hook.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>On the canvas</th><th>Hook event</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td>Before this action</td><td class="mono">PreToolUse</td><td>Block a write to plan data until a person approves it</td></tr>
+          <tr><td>After this action</td><td class="mono">PostToolUse</td><td>Redact PHI from a result, log to the audit trail</td></tr>
+          <tr><td>When work is handed off</td><td class="mono">SubagentStart / SubagentStop</td><td>Check that the delegation brief is complete; check the subagent's result</td></tr>
+          <tr><td>When a task is marked done</td><td class="mono">TaskCompleted</td><td>Quality gate: run the regression eval and reject on failure</td></tr>
+          <tr><td>When the agent finishes</td><td class="mono">Stop</td><td>Confirm every required output exists before responding</td></tr>
+          <tr><td>When a session starts</td><td class="mono">SessionStart</td><td>Load the client's plan context</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Check types map to hook handlers: <strong>Rule or script</strong> (<code>command</code>), <strong>AI judge</strong> (<code>prompt</code>), <strong>Investigating agent</strong> (<code>agent</code>), <strong>External service</strong> (<code>http</code>), and <strong>Human approval</strong> (a permission decision of <code>ask</code>).</p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Lifecycle</span>
+    <h2>AI-DLC fills the knowledge base</h2>
+    <p>AI-DLC replaces sprints with short "bolts" and epics with "units of work". AI proposes, and the team validates the proposals together (mob elaboration). Each phase writes specific node types into the graph.</p>
+    <div class="phases">
+      <div class="phase"><h3>Inception</h3><ul><li>Requirements</li><li>User stories</li><li>KPIs</li><li>Units of work</li></ul></div>
+      <div class="phase"><h3>Construction</h3><ul><li>UI, functions, data</li><li>Agents, skills, tools</li><li>Hooks and human checkpoints</li><li>Tests and eval tasks</li></ul></div>
+      <div class="phase"><h3>Operations</h3><ul><li>Metrics against KPIs</li><li>Eval results over time</li><li>Production failures become new eval tasks</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Open by default</span>
+    <h2>How the graph stays agent-agnostic</h2>
+    <ol class="steps">
+      <li><strong>Property-graph core.</strong> Typed nodes and edges, stored in any graph store and queried with openCypher or GQL. Facts carry valid-from and valid-to times (the temporal approach used by Graphiti/Zep), so the graph records how the project changed.</li>
+      <li><strong>Portable serialization.</strong> JSON-LD export with a published vocabulary, so other knowledge graphs can link to it.</li>
+      <li><strong>MCP server.</strong> Tools such as <code>graph.query</code>, <code>graph.get_lineage</code>, <code>graph.attach_hook</code> and <code>graph.record_eval</code> let any MCP-capable agent read and update the project.</li>
+      <li><strong>Agent Skills export.</strong> Skill nodes become <code>SKILL.md</code> folders. Hooks become runnable hook config.</li>
+    </ol>
+    <p class="note"><strong>Open question for the team:</strong> which parts of Bodhi stay proprietary (governance, audit, connectors to client data) and which become the open layer (the schema, the MCP surface, the canvas).</p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Sources</span>
+    <ul class="sources">
+      <li><a href="https://www.anthropic.com/engineering/building-effective-agents">Building effective agents</a></li>
+      <li><a href="https://www.anthropic.com/engineering/multi-agent-research-system">How we built our multi-agent research system</a></li>
+      <li><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents</a></li>
+      <li><a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Demystifying evals for AI agents</a></li>
+      <li><a href="https://www.anthropic.com/research/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents with Agent Skills</a></li>
+      <li><a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview">Agent Skills overview (docs)</a></li>
+      <li><a href="https://code.claude.com/docs/en/hooks">Hooks reference</a></li>
+      <li><a href="https://code.claude.com/docs/en/agent-teams">Agent teams</a></li>
+      <li><a href="https://anthropic.skilljar.com/">Anthropic Academy courses</a></li>
+      <li><a href="https://aws.amazon.com/blogs/devops/ai-driven-development-life-cycle">AI-Driven Development Lifecycle (AWS)</a></li>
+      <li><a href="https://www.thoughtworks.com/en-us/radar/platforms/graphiti">Graphiti on the Thoughtworks Radar</a></li>
+      <li><a href="https://www.publicissapient.com/solutions/bodhi">Bodhi</a> and <a href="https://publicissapient.com/platforms">PS platforms</a></li>
+    </ul>
+  </section>
+</main>
